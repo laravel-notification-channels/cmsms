@@ -1,12 +1,12 @@
-# Cmsms notifications channel for Laravel 5.3
+# CMSMS notifications channel for Laravel 5.3
 
-This package makes it easy to send [CM SMS messages](https://dashboard.onlinesmsgateway.com/docs) with Laravel 5.3.
+This package makes it easy to send [CMSMS messages](https://dashboard.onlinesmsgateway.com/docs) with Laravel 5.3.
 
 ## Contents
 
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [Setting up your Cmsms account](#setting-up-your-Cmsms-account)
+- [Setting up your CMSMS account](#setting-up-your-CMSMS-account)
 - [Usage](#usage)
 - [Changelog](#changelog)
 - [Testing](#testing)
@@ -38,9 +38,9 @@ You must install the service provider:
 ],
 ```
 
-## Setting up your Cmsms account
+## Setting up your CMSMS account
 
-Add your Cmsms Product Token and default originator (name or number of sender) to your `config/services.php`:
+Add your CMSMS Product Token and default originator (name or number of sender) to your `config/services.php`:
 
 ```php
 // config/services.php
