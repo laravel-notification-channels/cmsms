@@ -6,9 +6,7 @@ use Illuminate\Notifications\Notification;
 
 class CmsmsChannel
 {
-    /**
-     * @var \NotificationChannels\Cmsms\CmsmsClient
-     */
+    /** @var CmsmsClient */
     protected $client;
 
     /**
@@ -20,6 +18,8 @@ class CmsmsChannel
     }
 
     /**
+     * Send the given notification.
+     *
      * @param mixed $notifiable
      * @param \Illuminate\Notifications\Notification $notification
      *
@@ -27,12 +27,16 @@ class CmsmsChannel
      */
     public function send($notifiable, Notification $notification)
     {
+        if (! $recipient = $notifiable->routeNotificationFor('Cmsms')) {
+            return;
+        }
+
         $message = $notification->toCmsms($notifiable);
 
         if (is_string($message)) {
             $message = CmsmsMessage::create($message);
         }
 
-        $this->client->send($message);
+        $this->client->send($message, $recipient);
     }
 }

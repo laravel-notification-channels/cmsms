@@ -1,13 +1,23 @@
 # CMSMS notifications channel for Laravel 5.3
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/laravel-notification-channels/cmsms.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/cmsms)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Build Status](https://img.shields.io/travis/laravel-notification-channels/cmsms/master.svg?style=flat-square)](https://travis-ci.org/laravel-notification-channels/cmsms)
+[![StyleCI](https://styleci.io/repos/xxxx/shield)](https://styleci.io/repos/xxxx)
+[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/xxxxx.svg?style=flat-square)](https://insight.sensiolabs.com/projects/xxxx)
+[![Quality Score](https://img.shields.io/scrutinizer/g/laravel-notification-channels/cmsms.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/cmsms)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/laravel-notification-channels/cmsms/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/cmsms/?branch=master)
+[![Total Downloads](https://img.shields.io/packagist/dt/laravel-notification-channels/cmsms.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/cmsms)
+
 This package makes it easy to send [CMSMS messages](https://dashboard.onlinesmsgateway.com/docs) with Laravel 5.3.
 
 ## Contents
 
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [Setting up your CMSMS account](#setting-up-your-CMSMS-account)
+- [Setting up your CMSMS account](#setting-up-your-cmsms-account)
 - [Usage](#usage)
+	- [Available message methods](#available-message-methods)
 - [Changelog](#changelog)
 - [Testing](#testing)
 - [Security](#security)
@@ -52,7 +62,7 @@ Add your CMSMS Product Token and default originator (name or number of sender) t
 ...
 ```
 
-Notice: The originator can contain a maximum of 11 alfanumeric characters.
+Notice: The originator can contain a maximum of 11 alphanumeric characters.
 
 ## Usage
 
@@ -72,12 +82,28 @@ class VpsServerOrdered extends Notification
 
     public function toCmsms($notifiable)
     {
-        return (new CmsmsMessage("Your {$notifiable->service} was ordered!"));
+        return CmsmsMessage::create("Your {$notifiable->service} was ordered!");
     }
 }
 ```
 
+
+In order to let your Notification know which phone numer you are targeting, add the `routeNotificationForCmsms` method to your Notifiable model.
+
 **Important note**: CMCMS requires the recipients phone number to be in international format. For instance: 0031612345678
+
+```php
+public function routeNotificationForCmsms()
+{
+    return '0031612345678';
+}
+```
+
+### Available message methods
+
+- `body('')`: Accepts a string value for the message body.
+- `originator('')`: Accepts a string value between 1 and 11 characters, used as the message sender name.
+- `reference('')`: Accepts a string value for your message reference. This information will be returned in a status report so you can match the message and it's status. Restrictions: 1 - 32 alphanumeric characters and reference will not work for demo accounts.
 
 ## Changelog
 
