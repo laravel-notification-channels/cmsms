@@ -66,14 +66,6 @@ class CmsmsMessageTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function it_can_set_recipient_from_string()
-    {
-        $message = (new CmsmsMessage)->recipient('0031612345678');
-
-        $this->assertEquals('0031612345678', Arr::get($message->toXmlArray(), 'TO'));
-    }
-
-    /** @test */
     public function it_can_set_reference()
     {
         $message = (new CmsmsMessage)->reference('REFERENCE123');

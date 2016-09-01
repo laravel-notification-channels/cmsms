@@ -51,17 +51,6 @@ class CmsmsMessage
     }
 
     /**
-     * @param string|int $recipient
-     * @return $this
-     */
-    public function recipient($recipient)
-    {
-        $this->recipient = (string) $recipient;
-
-        return $this;
-    }
-
-    /**
      * @param string $reference
      * @return $this
      * @throws InvalidMessage
