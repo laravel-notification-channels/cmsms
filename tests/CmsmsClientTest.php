@@ -9,7 +9,6 @@ use NotificationChannels\Cmsms\CmsmsClient;
 use NotificationChannels\Cmsms\CmsmsMessage;
 use NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification;
 use Orchestra\Testbench\TestCase;
-use PHPUnit_Framework_TestCase;
 
 class CmsmsClientTest extends TestCase
 {

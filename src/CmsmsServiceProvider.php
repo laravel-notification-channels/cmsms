@@ -4,7 +4,6 @@ namespace NotificationChannels\Cmsms;
 
 use Illuminate\Support\ServiceProvider;
 use GuzzleHttp\Client as GuzzleClient;
-use NotificationChannels\Cmsms\CmsmsChannel;
 use NotificationChannels\Cmsms\Exceptions\InvalidConfiguration;
 
 class CmsmsServiceProvider extends ServiceProvider
