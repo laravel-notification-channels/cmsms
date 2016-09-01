@@ -57,6 +57,6 @@ class TestNotification extends Notification
 {
     public function toCmsms($notifiable)
     {
-        return (new CmsmsMessage('Message content'))->setOriginator('APPNAME')->setRecipient('0031612345678');
+        return (new CmsmsMessage('Message content'))->originator('APPNAME');
     }
 }

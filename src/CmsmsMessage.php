@@ -6,41 +6,28 @@ use NotificationChannels\Cmsms\Exceptions\InvalidMessage;
 
 class CmsmsMessage
 {
-    /**
-     * @var string
-     */
-    public $body;
+    /** @var string  */
+    protected $body;
 
-    /**
-     * @var string
-     */
-    public $originator;
+    /** @var string */
+    protected $originator;
 
-    /**
-     * @var string
-     */
-    public $recipient;
-
-    /**
-     * @var string
-     */
-    public $reference;
+    /** @var string */
+    protected $reference;
 
     /**
      * @param string $body
      */
     public function __construct($body = '')
     {
-        if (!empty($body)) {
-            $this->setBody($body);
-        }
+        $this->body($body);
     }
 
     /**
      * @param string $body
      * @return $this
      */
-    public function setBody($body)
+    public function body($body)
     {
         $this->body = trim($body);
 
@@ -50,21 +37,15 @@ class CmsmsMessage
     /**
      * @param string|int $originator
      * @return $this
+     * @throws InvalidMessage
      */
-    public function setOriginator($originator)
+    public function originator($originator)
     {
+        if (empty($originator) || strlen($originator) > 11) {
+            throw InvalidMessage::invalidOriginator($originator);
+        }
+
         $this->originator = (string) $originator;
-
-        return $this;
-    }
-
-    /**
-     * @param string|int $recipient
-     * @return $this
-     */
-    public function setRecipient($recipient)
-    {
-        $this->recipient = (string) $recipient;
 
         return $this;
     }
@@ -74,7 +55,7 @@ class CmsmsMessage
      * @return $this
      * @throws InvalidMessage
      */
-    public function setReference($reference)
+    public function reference($reference)
     {
         if (empty($reference) || strlen($reference) > 32 || !ctype_alnum($reference)) {
             throw InvalidMessage::invalidReference($reference);
@@ -93,7 +74,6 @@ class CmsmsMessage
         return array_filter([
             'BODY' => $this->body,
             'FROM' => $this->originator,
-            'TO' => $this->recipient,
             'REFERENCE' => $this->reference,
         ]);
     }

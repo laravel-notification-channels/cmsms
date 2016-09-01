@@ -2,6 +2,7 @@
 
 namespace NotificationChannels\Cmsms\Test;
 
+use Illuminate\Support\Arr;
 use NotificationChannels\Cmsms\CmsmsMessage;
 use NotificationChannels\Cmsms\Exceptions\InvalidMessage;
 
@@ -20,7 +21,7 @@ class CmsmsMessageTest extends \PHPUnit_Framework_TestCase
     {
         $message = new CmsmsMessage('Foo');
 
-        $this->assertEquals('Foo', $message->body);
+        $this->assertEquals('Foo', Arr::get($message->toXmlArray(), 'BODY'));
     }
 
     /** @test */
@@ -29,39 +30,47 @@ class CmsmsMessageTest extends \PHPUnit_Framework_TestCase
         $message = CmsmsMessage::create('Foo');
 
         $this->assertInstanceOf(CmsmsMessage::class, $message);
-        $this->assertEquals('Foo', $message->body);
+        $this->assertEquals('Foo', Arr::get($message->toXmlArray(), 'BODY'));
     }
 
     /** @test */
     public function it_can_set_body()
     {
-        $message = (new CmsmsMessage)->setBody('Bar');
+        $message = (new CmsmsMessage)->body('Bar');
 
-        $this->assertEquals('Bar', $message->body);
+        $this->assertEquals('Bar', Arr::get($message->toXmlArray(), 'BODY'));
     }
 
     /** @test */
     public function it_can_set_originator()
     {
-        $message = (new CmsmsMessage)->setOriginator('APPNAME');
+        $message = (new CmsmsMessage)->originator('APPNAME');
 
-        $this->assertEquals('APPNAME', $message->originator);
+        $this->assertEquals('APPNAME', Arr::get($message->toXmlArray(), 'FROM'));
     }
 
     /** @test */
-    public function it_can_set_recipient_from_string()
+    public function it_cannot_set_an_empty_originator()
     {
-        $message = (new CmsmsMessage)->setRecipient('0031612345678');
+        $this->setExpectedException(InvalidMessage::class);
 
-        $this->assertEquals('0031612345678', $message->recipient);
+        (new CmsmsMessage)->originator('');
+    }
+
+    /** @test */
+    public function it_cannot_set_an_originator_thats_too_long()
+    {
+        $this->setExpectedException(InvalidMessage::class);
+
+        (new CmsmsMessage)->originator('0123456789ab');
     }
 
     /** @test */
     public function it_can_set_reference()
     {
-        $message = (new CmsmsMessage)->setReference('REFERENCE123');
+        $message = (new CmsmsMessage)->reference('REFERENCE123');
 
-        $this->assertEquals('REFERENCE123', $message->reference);
+        $this->assertEquals('REFERENCE123', Arr::get($message->toXmlArray(), 'REFERENCE'));
     }
 
     /** @test */
@@ -69,15 +78,15 @@ class CmsmsMessageTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(InvalidMessage::class);
 
-        (new CmsmsMessage)->setReference('');
+        (new CmsmsMessage)->reference('');
     }
 
     /** @test */
-    public function it_cannot_set_a_reference_thats_to_long()
+    public function it_cannot_set_a_reference_thats_too_long()
     {
         $this->setExpectedException(InvalidMessage::class);
 
-        (new CmsmsMessage)->setReference('UmSM7h8I1nySJm0A8IqcU3LDswO7ojfJn');
+        (new CmsmsMessage)->reference('UmSM7h8I1nySJm0A8IqcU3LDswO7ojfJn');
     }
 
     /** @test */
@@ -85,7 +94,7 @@ class CmsmsMessageTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(InvalidMessage::class);
 
-        (new CmsmsMessage)->setReference('@#$*A*Sjks87');
+        (new CmsmsMessage)->reference('@#$*A*Sjks87');
     }
 
     /** @test */

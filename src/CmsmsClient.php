@@ -2,8 +2,8 @@
 
 namespace NotificationChannels\Cmsms;
 
-use Exception;
 use GuzzleHttp\Client as GuzzleClient;
+use Illuminate\Support\Arr;
 use NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification;
 use SimpleXMLElement;
 
@@ -11,14 +11,10 @@ class CmsmsClient
 {
     const GATEWAY_URL = 'https://sgw01.cm.nl/gateway.ashx';
 
-    /**
-     * @var GuzzleClient
-     */
+    /** @var GuzzleClient */
     protected $client;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $productToken;
 
     /**
@@ -33,18 +29,17 @@ class CmsmsClient
 
     /**
      * @param CmsmsMessage $message
+     * @param string $recipient
      * @throws CouldNotSendNotification
      */
-    public function send(CmsmsMessage $message)
+    public function send(CmsmsMessage $message, $recipient)
     {
-        if (empty($message->originator)) {
-            $message->setOriginator(config('services.cmsms.originator'));
+        if (is_null(Arr::get($message->toXmlArray(), 'FROM'))) {
+            $message->originator(config('services.cmsms.originator'));
         }
 
-        $messageXml = $this->buildMessageXml($message);
-
         $response = $this->client->request('POST', static::GATEWAY_URL, [
-            'body' => $messageXml,
+            'body' => $this->buildMessageXml($message, $recipient),
             'headers' => [
                 'Content-Type' => 'application/xml',
             ],
@@ -60,19 +55,21 @@ class CmsmsClient
 
     /**
      * @param CmsmsMessage $message
+     * @param string $recipient
      * @return string
      */
-    protected function buildMessageXml(CmsmsMessage $message)
+    protected function buildMessageXml(CmsmsMessage $message, $recipient)
     {
         $xml = new SimpleXMLElement('<MESSAGES/>');
 
-        $authentication = $xml->addChild('AUTHENTICATION');
-        $authentication->addChild('PRODUCTTOKEN', $this->productToken);
+        $xml->addChild('AUTHENTICATION')
+            ->addChild('PRODUCTTOKEN', $this->productToken);
 
         $msg = $xml->addChild('MSG');
         foreach ($message->toXmlArray() as $name => $value) {
             $msg->addChild($name, $value);
         }
+        $msg->addChild('TO', $recipient);
 
         return $xml->asXML();
     }
