@@ -23,4 +23,13 @@ class InvalidMessage extends Exception
     {
         return new static("The originator on the CMSMS message may only contain 1 - 11 characters. Was given '{$originator}'");
     }
+
+    /**
+     * @param int $tariff
+     * @return static
+     */
+    public static function invalidTariff($tariff)
+    {
+        return new static("The tarrif on the CMSMS message may only contain a nonzero integer. Was given '{$tariff}'");
+    }
 }

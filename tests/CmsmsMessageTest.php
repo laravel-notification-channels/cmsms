@@ -98,6 +98,30 @@ class CmsmsMessageTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @test */
+    public function is_can_set_tariff()
+    {
+        $message = (new CmsmsMessage)->tariff(12);
+
+        $this->assertEquals(12, Arr::get($message->toXmlArray(), 'TARIFF'));
+    }
+
+    /** @test */
+    public function it_cannot_set_an_empty_tariff()
+    {
+        $this->setExpectedException(InvalidMessage::class);
+
+        (new CmsmsMessage)->tariff(0);
+    }
+
+    /** @test */
+    public function it_cannot_set_a_float_to_tariff()
+    {
+        $this->setExpectedException(InvalidMessage::class);
+
+        (new CmsmsMessage)->tariff(2.5);
+    }
+
+    /** @test */
     public function it_xml_contains_only_filled_parameters()
     {
         $message = new CmsmsMessage('Foo');
