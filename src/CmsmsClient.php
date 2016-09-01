@@ -35,7 +35,7 @@ class CmsmsClient
     public function send(CmsmsMessage $message, $recipient)
     {
         if (is_null(Arr::get($message->toXmlArray(), 'FROM'))) {
-            $message->setOriginator(config('services.cmsms.originator'));
+            $message->originator(config('services.cmsms.originator'));
         }
 
         $response = $this->client->request('POST', static::GATEWAY_URL, [

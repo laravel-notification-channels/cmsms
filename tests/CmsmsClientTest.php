@@ -47,6 +47,22 @@ class CmsmsClientTest extends TestCase
     }
 
     /** @test */
+    public function it_sets_a_default_originator_if_none_is_set()
+    {
+        $message = Mockery::mock(new CmsmsMessage('Message body'));
+        $message->shouldReceive('originator')
+                ->once()
+                ->with($this->app['config']['services.cmsms.originator']);
+
+        $this->guzzle
+            ->shouldReceive('request')
+            ->once()
+            ->andReturn(new Response(200, [], ''));
+
+        $this->client->send($message, '00301234');
+    }
+
+    /** @test */
     public function it_throws_exception_on_error_response()
     {
         $this->setExpectedException(CouldNotSendNotification::class);

@@ -13,9 +13,6 @@ class CmsmsMessage
     protected $originator;
 
     /** @var string */
-    protected $recipient;
-
-    /** @var string */
     protected $reference;
 
     /**
@@ -88,7 +85,6 @@ class CmsmsMessage
         return array_filter([
             'BODY' => $this->body,
             'FROM' => $this->originator,
-            'TO' => $this->recipient,
             'REFERENCE' => $this->reference,
         ]);
     }
