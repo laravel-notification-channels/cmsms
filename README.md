@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/laravel-notification-channels/cmsms.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/cmsms)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://img.shields.io/travis/laravel-notification-channels/cmsms/master.svg?style=flat-square)](https://travis-ci.org/laravel-notification-channels/cmsms)
-[![StyleCI](https://styleci.io/repos/xxxx/shield)](https://styleci.io/repos/xxxx)
+[![StyleCI](https://styleci.io/repos/67046405/shield)](https://styleci.io/repos/67046405)
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/xxxxx.svg?style=flat-square)](https://insight.sensiolabs.com/projects/xxxx)
 [![Quality Score](https://img.shields.io/scrutinizer/g/laravel-notification-channels/cmsms.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/cmsms)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/laravel-notification-channels/cmsms/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/cmsms/?branch=master)
