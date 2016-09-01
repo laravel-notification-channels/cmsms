@@ -18,7 +18,7 @@ class CmsmsClientTest extends TestCase
         parent::setUp();
         $this->app['config']['services.cmsms.originator'] = 'My App';
         $this->guzzle = Mockery::mock(new Client());
-        $this->client = Mockery::mock(new CmsmsClient($this->guzzle, '00000FFF-0000-F0F0-F0f0-FFFFFFFFFFFF'));
+        $this->client = Mockery::mock(new CmsmsClient($this->guzzle, '00000FFF-0000-F0F0-F0F0-FFFFFFFFFFFF'));
         $this->message = (new CmsmsMessage('Message content'))->originator('APPNAME');
     }
 
