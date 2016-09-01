@@ -48,7 +48,7 @@ class CmsmsClient
         // API returns an empty string on success
         // On failure, only the error string is passed
         $body = $response->getBody()->getContents();
-        if (!empty($body)) {
+        if (! empty($body)) {
             throw CouldNotSendNotification::serviceRespondedWithAnError($body);
         }
     }

@@ -6,7 +6,7 @@ use NotificationChannels\Cmsms\Exceptions\InvalidMessage;
 
 class CmsmsMessage
 {
-    /** @var string  */
+    /** @var string */
     protected $body;
 
     /** @var string */
@@ -57,7 +57,7 @@ class CmsmsMessage
      */
     public function reference($reference)
     {
-        if (empty($reference) || strlen($reference) > 32 || !ctype_alnum($reference)) {
+        if (empty($reference) || strlen($reference) > 32 || ! ctype_alnum($reference)) {
             throw InvalidMessage::invalidReference($reference);
         }
 
