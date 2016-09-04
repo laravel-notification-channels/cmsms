@@ -15,6 +15,9 @@ class CmsmsMessage
     /** @var string */
     protected $reference;
 
+    /** @var int */
+    protected $tariff;
+
     /**
      * @param string $body
      */
@@ -67,6 +70,22 @@ class CmsmsMessage
     }
 
     /**
+     * @param int $tariff Tariff in eurocent
+     * @return $this
+     * @throws InvalidMessage
+     */
+    public function tariff($tariff)
+    {
+        if (empty($tariff) || ! is_int($tariff)) {
+            throw InvalidMessage::invalidTariff($tariff);
+        }
+
+        $this->tariff = $tariff;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toXmlArray()
@@ -75,6 +94,7 @@ class CmsmsMessage
             'BODY' => $this->body,
             'FROM' => $this->originator,
             'REFERENCE' => $this->reference,
+            'TARIFF' => $this->tariff,
         ]);
     }
 
