@@ -139,7 +139,7 @@ class CmsmsMessageTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function it_cannot_have_more_than_8_parts()
+    public function it_cannot_set_more_than_8_parts_to_multipart()
     {
         $this->setExpectedException(InvalidMessage::class);
 

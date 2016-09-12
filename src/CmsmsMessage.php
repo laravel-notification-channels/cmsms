@@ -100,7 +100,7 @@ class CmsmsMessage
     public function multipart($minimum, $maximum)
     {
         if (! is_int($minimum) || ! is_int($maximum) || $maximum > 8 || $minimum >= $maximum) {
-            throw InvalidMessage::invalidMessageParts($minimum, $maximum);
+            throw InvalidMessage::invalidMultipart($minimum, $maximum);
         }
 
         $this->minimumNumberOfMessageParts = $minimum;

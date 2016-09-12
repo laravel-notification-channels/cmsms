@@ -38,8 +38,8 @@ class InvalidMessage extends Exception
      * @param int $maximum
      * @return static
      */
-    public static function invalidMessageParts($minimum, $maximum)
+    public static function invalidMultipart($minimum, $maximum)
     {
-        return new static("The number of message parts on the CMSMS message may only contain a integer range from 0 to 8. Was given a minimum of '{$minimum}' and maximum of '{$maximum}'");
+        return new static("The number of message parts for sending a multipart message on the CMSMS message may only contain a integer range from 0 to 8. Was given a minimum of '{$minimum}' and maximum of '{$maximum}'");
     }
 }
