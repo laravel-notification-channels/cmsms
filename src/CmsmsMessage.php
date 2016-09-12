@@ -18,6 +18,12 @@ class CmsmsMessage
     /** @var int */
     protected $tariff;
 
+    /** @var int */
+    protected $minimumNumberOfMessageParts;
+
+    /** @var int */
+    protected $maximumNumberOfMessageParts;
+
     /**
      * @param string $body
      */
@@ -86,6 +92,24 @@ class CmsmsMessage
     }
 
     /**
+     * @param int $minimum
+     * @param int $maximum
+     * @return $this
+     * @throws InvalidMessage
+     */
+    public function multipart($minimum, $maximum)
+    {
+        if (! is_int($minimum) || ! is_int($maximum) || $maximum > 8 || $minimum >= $maximum) {
+            throw InvalidMessage::invalidMessageParts($minimum, $maximum);
+        }
+
+        $this->minimumNumberOfMessageParts = $minimum;
+        $this->maximumNumberOfMessageParts = $maximum;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toXmlArray()
@@ -95,6 +119,8 @@ class CmsmsMessage
             'FROM' => $this->originator,
             'REFERENCE' => $this->reference,
             'TARIFF' => $this->tariff,
+            'MINIMUMNUMBEROFMESSAGEPARTS' => $this->minimumNumberOfMessageParts,
+            'MAXIMUMNUMBEROFMESSAGEPARTS' => $this->maximumNumberOfMessageParts,
         ]);
     }
 

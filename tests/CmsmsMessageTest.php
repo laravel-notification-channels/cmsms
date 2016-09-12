@@ -98,7 +98,7 @@ class CmsmsMessageTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function is_can_set_tariff()
+    public function it_can_set_tariff()
     {
         $message = (new CmsmsMessage)->tariff(12);
 
@@ -119,6 +119,39 @@ class CmsmsMessageTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(InvalidMessage::class);
 
         (new CmsmsMessage)->tariff(2.5);
+    }
+
+    /** @test */
+    public function it_can_set_multipart()
+    {
+        $message = (new CmsmsMessage)->multipart(1, 4);
+
+        $this->assertEquals(1, Arr::get($message->toXmlArray(), 'MINIMUMNUMBEROFMESSAGEPARTS'));
+        $this->assertEquals(4, Arr::get($message->toXmlArray(), 'MAXIMUMNUMBEROFMESSAGEPARTS'));
+    }
+
+    /** @test */
+    public function it_cannot_set_a_float_to_multipart()
+    {
+        $this->setExpectedException(InvalidMessage::class);
+
+        (new CmsmsMessage)->multipart(1.3, 4.8);
+    }
+
+    /** @test */
+    public function it_cannot_have_more_than_8_parts()
+    {
+        $this->setExpectedException(InvalidMessage::class);
+
+        (new CmsmsMessage)->multipart(1, 9);
+    }
+
+    /** @test */
+    public function it_cannot_have_a_higher_minimum_than_maximum_for_multipart()
+    {
+        $this->setExpectedException(InvalidMessage::class);
+
+        (new CmsmsMessage)->multipart(4, 3);
     }
 
     /** @test */

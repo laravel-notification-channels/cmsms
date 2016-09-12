@@ -105,6 +105,7 @@ public function routeNotificationForCmsms()
 - `originator('')`: Accepts a string value between 1 and 11 characters, used as the message sender name.
 - `reference('')`: Accepts a string value for your message reference. This information will be returned in a status report so you can match the message and it's status. Restrictions: 1 - 32 alphanumeric characters and reference will not work for demo accounts.
 - `tariff()`: Accepts a integer value for your message tariff. The unit is eurocent. Requires the `originator` to be set to a specific value. Contact CM for this value and to enable this feature for your contract.
+- `multipart($minimum, $maximum)`: Accepts a 0 to 8 integer range which allows multipart messages. See the [documentation from CM](https://dashboard.onlinesmsgateway.com/docs#send-a-message-multipart) for more information.
 
 ## Changelog
 

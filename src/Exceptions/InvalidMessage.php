@@ -32,4 +32,14 @@ class InvalidMessage extends Exception
     {
         return new static("The tarrif on the CMSMS message may only contain a nonzero integer. Was given '{$tariff}'");
     }
+
+    /**
+     * @param int $minimum
+     * @param int $maximum
+     * @return static
+     */
+    public static function invalidMessageParts($minimum, $maximum)
+    {
+        return new static("The number of message parts on the CMSMS message may only contain a integer range from 0 to 8. Was given a minimum of '{$minimum}' and maximum of '{$maximum}'");
+    }
 }
