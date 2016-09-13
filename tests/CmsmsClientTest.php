@@ -73,4 +73,17 @@ class CmsmsClientTest extends TestCase
 
         $this->client->send($this->message, '00301234');
     }
+
+    /** @test */
+    public function it_includes_tariff_in_xml()
+    {
+        $message = clone $this->message;
+        $message->tariff(20);
+
+        $messageXml = $this->client->buildMessageXml($message, '00301234');
+        $parsedXml = simplexml_load_string($messageXml);
+
+        $this->assertFalse(empty($parsedXml->TARIFF));
+        $this->assertEquals(20, (int) $parsedXml->TARIFF);
+    }
 }

@@ -102,7 +102,7 @@ class CmsmsMessageTest extends \PHPUnit_Framework_TestCase
     {
         $message = (new CmsmsMessage)->tariff(12);
 
-        $this->assertEquals(12, Arr::get($message->toXmlArray(), 'TARIFF'));
+        $this->assertEquals(12, $message->getTariff());
     }
 
     /** @test */
