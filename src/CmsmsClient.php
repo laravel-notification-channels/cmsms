@@ -58,12 +58,16 @@ class CmsmsClient
      * @param string $recipient
      * @return string
      */
-    protected function buildMessageXml(CmsmsMessage $message, $recipient)
+    public function buildMessageXml(CmsmsMessage $message, $recipient)
     {
         $xml = new SimpleXMLElement('<MESSAGES/>');
 
         $xml->addChild('AUTHENTICATION')
             ->addChild('PRODUCTTOKEN', $this->productToken);
+
+        if ($tariff = $message->getTariff()) {
+            $xml->addChild('TARIFF', $tariff);
+        }
 
         $msg = $xml->addChild('MSG');
         foreach ($message->toXmlArray() as $name => $value) {

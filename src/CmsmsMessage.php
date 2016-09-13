@@ -16,7 +16,7 @@ class CmsmsMessage
     protected $reference;
 
     /** @var int */
-    protected $tariff;
+    protected $tariff = 0;
 
     /** @var int */
     protected $minimumNumberOfMessageParts;
@@ -92,6 +92,14 @@ class CmsmsMessage
     }
 
     /**
+     * @return int
+     */
+    public function getTariff()
+    {
+        return $this->tariff;
+    }
+
+    /**
      * @param int $minimum
      * @param int $maximum
      * @return $this
@@ -118,7 +126,6 @@ class CmsmsMessage
             'BODY' => $this->body,
             'FROM' => $this->originator,
             'REFERENCE' => $this->reference,
-            'TARIFF' => $this->tariff,
             'MINIMUMNUMBEROFMESSAGEPARTS' => $this->minimumNumberOfMessageParts,
             'MAXIMUMNUMBEROFMESSAGEPARTS' => $this->maximumNumberOfMessageParts,
         ]);
