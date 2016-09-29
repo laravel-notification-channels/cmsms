@@ -82,7 +82,7 @@ class CmsmsMessage
      */
     public function tariff($tariff)
     {
-        if (empty($tariff) || ! is_int($tariff)) {
+        if (! is_int($tariff)) {
             throw InvalidMessage::invalidTariff($tariff);
         }
 

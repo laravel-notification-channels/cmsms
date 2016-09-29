@@ -106,11 +106,11 @@ class CmsmsMessageTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function it_cannot_set_an_empty_tariff()
+    public function it_can_set_an_empty_tariff()
     {
-        $this->setExpectedException(InvalidMessage::class);
+        $message = (new CmsmsMessage)->tariff(0);
 
-        (new CmsmsMessage)->tariff(0);
+        $this->assertEquals(0, $message->getTariff());
     }
 
     /** @test */
