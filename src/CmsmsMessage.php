@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NotificationChannels\Cmsms;
 
 use NotificationChannels\Cmsms\Exceptions\InvalidMessage;
@@ -27,7 +29,7 @@ class CmsmsMessage
     /**
      * @param string $body
      */
-    public function __construct($body = '')
+    public function __construct(string $body = '')
     {
         $this->body($body);
     }
@@ -36,7 +38,7 @@ class CmsmsMessage
      * @param string $body
      * @return $this
      */
-    public function body($body)
+    public function body(string $body)
     {
         $this->body = trim($body);
 
@@ -64,7 +66,7 @@ class CmsmsMessage
      * @return $this
      * @throws InvalidMessage
      */
-    public function reference($reference)
+    public function reference(string $reference)
     {
         if (empty($reference) || strlen($reference) > 32 || ! ctype_alnum($reference)) {
             throw InvalidMessage::invalidReference($reference);
@@ -80,12 +82,8 @@ class CmsmsMessage
      * @return $this
      * @throws InvalidMessage
      */
-    public function tariff($tariff)
+    public function tariff(int $tariff)
     {
-        if (! is_int($tariff)) {
-            throw InvalidMessage::invalidTariff($tariff);
-        }
-
         $this->tariff = $tariff;
 
         return $this;
@@ -94,7 +92,7 @@ class CmsmsMessage
     /**
      * @return int
      */
-    public function getTariff()
+    public function getTariff(): int
     {
         return $this->tariff;
     }
@@ -105,9 +103,9 @@ class CmsmsMessage
      * @return $this
      * @throws InvalidMessage
      */
-    public function multipart($minimum, $maximum)
+    public function multipart(int $minimum, int $maximum)
     {
-        if (! is_int($minimum) || ! is_int($maximum) || $maximum > 8 || $minimum >= $maximum) {
+        if ($maximum > 8 || $minimum >= $maximum) {
             throw InvalidMessage::invalidMultipart($minimum, $maximum);
         }
 
@@ -120,7 +118,7 @@ class CmsmsMessage
     /**
      * @return array
      */
-    public function toXmlArray()
+    public function toXmlArray(): array
     {
         return array_filter([
             'BODY' => $this->body,

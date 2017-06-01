@@ -2,6 +2,12 @@
 
 All notable changes to `CMSMS` will be documented in this file
 
+## [1.0.0] - 2016-09-29
+#### Changed
+- Added support for Laravel 5.4 and 5.5
+- Dropped support for PHP 5.6
+- Added support for Laravel 5.5 package autoloader
+
 ## [0.0.5] - 2016-09-29
 #### Fixed
 - Allow an empty `tariff` to be set.

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NotificationChannels\Cmsms;
 
-use GuzzleHttp\Client as GuzzleClient;
-use Illuminate\Support\Arr;
-use NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification;
 use SimpleXMLElement;
+use Illuminate\Support\Arr;
+use GuzzleHttp\Client as GuzzleClient;
+use NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification;
 
 class CmsmsClient
 {
@@ -21,7 +23,7 @@ class CmsmsClient
      * @param GuzzleClient $client
      * @param string $productToken
      */
-    public function __construct(GuzzleClient $client, $productToken)
+    public function __construct(GuzzleClient $client, string $productToken)
     {
         $this->client = $client;
         $this->productToken = $productToken;
@@ -32,7 +34,7 @@ class CmsmsClient
      * @param string $recipient
      * @throws CouldNotSendNotification
      */
-    public function send(CmsmsMessage $message, $recipient)
+    public function send(CmsmsMessage $message, string $recipient)
     {
         if (is_null(Arr::get($message->toXmlArray(), 'FROM'))) {
             $message->originator(config('services.cmsms.originator'));
@@ -58,7 +60,7 @@ class CmsmsClient
      * @param string $recipient
      * @return string
      */
-    public function buildMessageXml(CmsmsMessage $message, $recipient)
+    public function buildMessageXml(CmsmsMessage $message, string $recipient): string
     {
         $xml = new SimpleXMLElement('<MESSAGES/>');
 
@@ -66,12 +68,12 @@ class CmsmsClient
             ->addChild('PRODUCTTOKEN', $this->productToken);
 
         if ($tariff = $message->getTariff()) {
-            $xml->addChild('TARIFF', $tariff);
+            $xml->addChild('TARIFF', (string) $tariff);
         }
 
         $msg = $xml->addChild('MSG');
         foreach ($message->toXmlArray() as $name => $value) {
-            $msg->addChild($name, $value);
+            $msg->addChild($name, (string) $value);
         }
         $msg->addChild('TO', $recipient);
 

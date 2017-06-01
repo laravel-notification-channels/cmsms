@@ -2,13 +2,13 @@
 
 namespace NotificationChannels\Cmsms\Test;
 
+use Mockery;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
-use Mockery;
+use Orchestra\Testbench\TestCase;
 use NotificationChannels\Cmsms\CmsmsClient;
 use NotificationChannels\Cmsms\CmsmsMessage;
 use NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification;
-use Orchestra\Testbench\TestCase;
 
 class CmsmsClientTest extends TestCase
 {
@@ -34,7 +34,10 @@ class CmsmsClientTest extends TestCase
         $this->assertInstanceOf(CmsmsMessage::class, $this->message);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @doesNotPerformAssertions
+     */
     public function it_can_send_message()
     {
         $this->guzzle
@@ -45,7 +48,10 @@ class CmsmsClientTest extends TestCase
         $this->client->send($this->message, '00301234');
     }
 
-    /** @test */
+    /**
+     * @test
+     * @doesNotPerformAssertions
+     */
     public function it_sets_a_default_originator_if_none_is_set()
     {
         $message = Mockery::mock(new CmsmsMessage('Message body'));
@@ -64,7 +70,7 @@ class CmsmsClientTest extends TestCase
     /** @test */
     public function it_throws_exception_on_error_response()
     {
-        $this->setExpectedException(CouldNotSendNotification::class);
+        $this->expectException(CouldNotSendNotification::class);
 
         $this->guzzle
             ->shouldReceive('request')
