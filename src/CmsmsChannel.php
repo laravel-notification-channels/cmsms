@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NotificationChannels\Cmsms;
 
 use Illuminate\Notifications\Notification;

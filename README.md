@@ -38,7 +38,7 @@ You can install the package via composer:
 composer require laravel-notification-channels/cmsms
 ```
 
-You must install the service provider:
+You must install the service provider for Laravel 5.4 and below:
 
 ```php
 // config/app.php
@@ -47,6 +47,8 @@ You must install the service provider:
     NotificationChannels\Cmsms\CmsmsServiceProvider::class,
 ],
 ```
+
+Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
 
 ## Setting up your CMSMS account
 

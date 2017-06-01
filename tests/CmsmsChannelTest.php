@@ -9,9 +9,9 @@ use Mockery;
 use NotificationChannels\Cmsms\CmsmsChannel;
 use NotificationChannels\Cmsms\CmsmsClient;
 use NotificationChannels\Cmsms\CmsmsMessage;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class CmsmsChannelTest extends PHPUnit_Framework_TestCase
+class CmsmsChannelTest extends TestCase
 {
     public function setUp()
     {
@@ -35,7 +35,10 @@ class CmsmsChannelTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(CmsmsChannel::class, $this->channel);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @doesNotPerformAssertions
+     */
     public function it_shares_message()
     {
         $this->client->shouldReceive('send')->once();
