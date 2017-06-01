@@ -2,14 +2,14 @@
 
 namespace NotificationChannels\Cmsms\Test;
 
+use Mockery;
 use GuzzleHttp\Client;
+use PHPUnit\Framework\TestCase;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
-use Mockery;
-use NotificationChannels\Cmsms\CmsmsChannel;
 use NotificationChannels\Cmsms\CmsmsClient;
+use NotificationChannels\Cmsms\CmsmsChannel;
 use NotificationChannels\Cmsms\CmsmsMessage;
-use PHPUnit\Framework\TestCase;
 
 class CmsmsChannelTest extends TestCase
 {
