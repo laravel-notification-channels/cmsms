@@ -4,6 +4,8 @@ php:
   - 7.0
   - 7.1
 
+sudo: false
+
 env:
   matrix:
     - COMPOSER_FLAGS="--prefer-lowest"
