@@ -13,8 +13,10 @@ use NotificationChannels\Cmsms\CmsmsMessage;
 
 class CmsmsChannelTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->notification = new TestNotification;
         $this->notifiable = new TestNotifiable;
         $this->guzzle = Mockery::mock(new Client());
@@ -22,7 +24,7 @@ class CmsmsChannelTest extends TestCase
         $this->channel = new CmsmsChannel($this->client);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Mockery::close();
         parent::tearDown();
@@ -60,6 +62,6 @@ class TestNotification extends Notification
 {
     public function toCmsms($notifiable)
     {
-        return (new CmsmsMessage('Message content'))->originator('APPNAME');
+        return CmsmsMessage::create('Message content')->originator('APPNAME');
     }
 }

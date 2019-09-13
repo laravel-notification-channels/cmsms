@@ -6,10 +6,7 @@ use Exception;
 
 class InvalidConfiguration extends Exception
 {
-    /**
-     * @return static
-     */
-    public static function configurationNotSet()
+    public static function configurationNotSet(): self
     {
         return new static('In order to send notifications via CMSMS you need to add credentials in the `cmsms` key of `config.services`.');
     }
