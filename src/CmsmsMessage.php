@@ -29,7 +29,7 @@ class CmsmsMessage
     /**
      * @param string $body
      */
-    private function __construct(string $body = "")
+    private function __construct(string $body = '')
     {
         $this->body($body);
     }
