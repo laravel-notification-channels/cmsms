@@ -1,4 +1,4 @@
-# CMSMS notifications channel for Laravel 5.3
+# CMSMS notifications channel for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/laravel-notification-channels/cmsms.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/cmsms)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
@@ -9,7 +9,7 @@
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/laravel-notification-channels/cmsms/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/cmsms/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/laravel-notification-channels/cmsms.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/cmsms)
 
-This package makes it easy to send [CMSMS messages](https://dashboard.onlinesmsgateway.com/docs) with Laravel 5.3.
+This package makes it easy to send [CMSMS messages](https://dashboard.onlinesmsgateway.com/docs) with Laravel.
 
 ## Contents
 
@@ -28,7 +28,7 @@ This package makes it easy to send [CMSMS messages](https://dashboard.onlinesmsg
 ## Requirements
 
 - [Sign up](https://dashboard.onlinesmsgateway.com) for a online sms gateway account
-- Find your HTTPS API key in your account settings
+- Find your API key in account settings
 
 ## Installation
 
@@ -38,7 +38,11 @@ You can install the package via composer:
 composer require laravel-notification-channels/cmsms
 ```
 
-You must install the service provider for Laravel 5.4 and below:
+This package will register itself automatically with Laravel 5.5 and up trough Package auto-discovery.
+
+### Manual installation
+
+You can install the service provider for Laravel 5.4 and below:
 
 ```php
 // config/app.php
@@ -47,8 +51,6 @@ You must install the service provider for Laravel 5.4 and below:
     NotificationChannels\Cmsms\CmsmsServiceProvider::class,
 ],
 ```
-
-Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
 
 ## Setting up your CMSMS account
 
@@ -105,8 +107,8 @@ public function routeNotificationForCmsms()
 
 - `body('')`: Accepts a string value for the message body.
 - `originator('')`: Accepts a string value between 1 and 11 characters, used as the message sender name.
-- `reference('')`: Accepts a string value for your message reference. This information will be returned in a status report so you can match the message and it's status. Restrictions: 1 - 32 alphanumeric characters and reference will not work for demo accounts.
-- `tariff()`: Accepts a integer value for your message tariff. The unit is eurocent. Requires the `originator` to be set to a specific value. Contact CM for this value and to enable this feature for your contract.
+- `reference('')`: Accepts a string value for your message reference. This information will be returned in a status report so you can match the message and it's status. Restrictions: 1 - 32 alphanumeric characters. Reference will not work for demo accounts.
+- `tariff()`: Accepts a integer value for your message tariff. The unit is eurocent. Requires the `originator` to be set to a specific value. Contact CM for this tariff value. CM also must enable this feature for your contract manually.
 - `multipart($minimum, $maximum)`: Accepts a 0 to 8 integer range which allows multipart messages. See the [documentation from CM](https://dashboard.onlinesmsgateway.com/docs#send-a-message-multipart) for more information.
 
 ## Changelog

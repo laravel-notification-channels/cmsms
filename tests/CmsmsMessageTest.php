@@ -12,7 +12,7 @@ class CmsmsMessageTest extends TestCase
     /** @test */
     public function it_can_be_instantiated()
     {
-        $message = new CmsmsMessage;
+        $message = CmsmsMessage::create();
 
         $this->assertInstanceOf(CmsmsMessage::class, $message);
     }
@@ -20,7 +20,7 @@ class CmsmsMessageTest extends TestCase
     /** @test */
     public function it_can_accept_body_content_when_created()
     {
-        $message = new CmsmsMessage('Foo');
+        $message = CmsmsMessage::create('Foo');
 
         $this->assertEquals('Foo', Arr::get($message->toXmlArray(), 'BODY'));
     }
@@ -37,7 +37,7 @@ class CmsmsMessageTest extends TestCase
     /** @test */
     public function it_can_set_body()
     {
-        $message = (new CmsmsMessage)->body('Bar');
+        $message = CmsmsMessage::create('Bar');
 
         $this->assertEquals('Bar', Arr::get($message->toXmlArray(), 'BODY'));
     }
@@ -45,7 +45,7 @@ class CmsmsMessageTest extends TestCase
     /** @test */
     public function it_can_set_originator()
     {
-        $message = (new CmsmsMessage)->originator('APPNAME');
+        $message = CmsmsMessage::create()->originator('APPNAME');
 
         $this->assertEquals('APPNAME', Arr::get($message->toXmlArray(), 'FROM'));
     }
@@ -55,7 +55,7 @@ class CmsmsMessageTest extends TestCase
     {
         $this->expectException(InvalidMessage::class);
 
-        (new CmsmsMessage)->originator('');
+        CmsmsMessage::create()->originator('');
     }
 
     /** @test */
@@ -63,13 +63,13 @@ class CmsmsMessageTest extends TestCase
     {
         $this->expectException(InvalidMessage::class);
 
-        (new CmsmsMessage)->originator('0123456789ab');
+        CmsmsMessage::create()->originator('0123456789ab');
     }
 
     /** @test */
     public function it_can_set_reference()
     {
-        $message = (new CmsmsMessage)->reference('REFERENCE123');
+        $message = CmsmsMessage::create()->reference('REFERENCE123');
 
         $this->assertEquals('REFERENCE123', Arr::get($message->toXmlArray(), 'REFERENCE'));
     }
@@ -79,7 +79,7 @@ class CmsmsMessageTest extends TestCase
     {
         $this->expectException(InvalidMessage::class);
 
-        (new CmsmsMessage)->reference('');
+        CmsmsMessage::create()->reference('');
     }
 
     /** @test */
@@ -87,7 +87,7 @@ class CmsmsMessageTest extends TestCase
     {
         $this->expectException(InvalidMessage::class);
 
-        (new CmsmsMessage)->reference('UmSM7h8I1nySJm0A8IqcU3LDswO7ojfJn');
+        CmsmsMessage::create()->reference('UmSM7h8I1nySJm0A8IqcU3LDswO7ojfJn');
     }
 
     /** @test */
@@ -95,13 +95,13 @@ class CmsmsMessageTest extends TestCase
     {
         $this->expectException(InvalidMessage::class);
 
-        (new CmsmsMessage)->reference('@#$*A*Sjks87');
+        CmsmsMessage::create()->reference('@#$*A*Sjks87');
     }
 
     /** @test */
     public function it_can_set_tariff()
     {
-        $message = (new CmsmsMessage)->tariff(12);
+        $message = CmsmsMessage::create()->tariff(12);
 
         $this->assertEquals(12, $message->getTariff());
     }
@@ -109,14 +109,14 @@ class CmsmsMessageTest extends TestCase
     /** @test */
     public function it_can_set_an_empty_tariff()
     {
-        $message = (new CmsmsMessage)->tariff(0);
+        $message = CmsmsMessage::create()->tariff(0);
 
         $this->assertEquals(0, $message->getTariff());
     }
 
     public function it_can_set_multipart()
     {
-        $message = (new CmsmsMessage)->multipart(1, 4);
+        $message = CmsmsMessage::create()->multipart(1, 4);
 
         $this->assertEquals(1, Arr::get($message->toXmlArray(), 'MINIMUMNUMBEROFMESSAGEPARTS'));
         $this->assertEquals(4, Arr::get($message->toXmlArray(), 'MAXIMUMNUMBEROFMESSAGEPARTS'));
@@ -126,7 +126,7 @@ class CmsmsMessageTest extends TestCase
     {
         $this->expectException(InvalidMessage::class);
 
-        (new CmsmsMessage)->multipart(1, 9);
+        CmsmsMessage::create()->multipart(1, 9);
     }
 
     /** @test */
@@ -134,13 +134,13 @@ class CmsmsMessageTest extends TestCase
     {
         $this->expectException(InvalidMessage::class);
 
-        (new CmsmsMessage)->multipart(4, 3);
+        CmsmsMessage::create()->multipart(4, 3);
     }
 
     /** @test */
     public function it_xml_contains_only_filled_parameters()
     {
-        $message = new CmsmsMessage('Foo');
+        $message = CmsmsMessage::create('Foo');
 
         $this->assertEquals([
             'BODY' => 'Foo',

@@ -29,7 +29,7 @@ class CmsmsMessage
     /**
      * @param string $body
      */
-    public function __construct(string $body = '')
+    private function __construct(string $body = '')
     {
         $this->body($body);
     }
@@ -133,7 +133,7 @@ class CmsmsMessage
      * @param string $body
      * @return static
      */
-    public static function create($body = '')
+    public static function create($body = ''): self
     {
         return new static($body);
     }

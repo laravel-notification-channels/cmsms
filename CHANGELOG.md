@@ -2,6 +2,12 @@
 
 All notable changes to `CMSMS` will be documented in this file
 
+## [2.0.0] - 2019-09-13
+#### Changed
+- Added support for Laravel > 5.5 & 6.0
+- Make the `CmsmsMessage` constructor private to enforce static factory usage
+- Dropped support for PHP 7.0 & 7.1
+
 ## [1.0.0] - 2016-09-29
 #### Changed
 - Added support for Laravel 5.4 and 5.5

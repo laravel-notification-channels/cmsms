@@ -12,16 +12,16 @@ use NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification;
 
 class CmsmsClientTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->app['config']['services.cmsms.originator'] = 'My App';
         $this->guzzle = Mockery::mock(new Client());
         $this->client = Mockery::mock(new CmsmsClient($this->guzzle, '00000FFF-0000-F0F0-F0F0-FFFFFFFFFFFF'));
-        $this->message = (new CmsmsMessage('Message content'))->originator('APPNAME');
+        $this->message = CmsmsMessage::create('Message content')->originator('APPNAME');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Mockery::close();
         parent::tearDown();
@@ -54,7 +54,7 @@ class CmsmsClientTest extends TestCase
      */
     public function it_sets_a_default_originator_if_none_is_set()
     {
-        $message = Mockery::mock(new CmsmsMessage('Message body'));
+        $message = Mockery::mock(CmsmsMessage::create('Message body'));
         $message->shouldReceive('originator')
                 ->once()
                 ->with($this->app['config']['services.cmsms.originator']);
