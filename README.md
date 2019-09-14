@@ -9,7 +9,7 @@
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/laravel-notification-channels/cmsms/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/cmsms/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/laravel-notification-channels/cmsms.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/cmsms)
 
-This package makes it easy to send [CMSMS messages](https://dashboard.onlinesmsgateway.com/docs) with Laravel.
+This package makes it easy to send [CMSMS messages](https://docs.cmtelecom.com/en/api/business-messaging-api/1.0/index) with Laravel.
 
 ## Contents
 
@@ -27,7 +27,7 @@ This package makes it easy to send [CMSMS messages](https://dashboard.onlinesmsg
 
 ## Requirements
 
-- [Sign up](https://dashboard.onlinesmsgateway.com) for a online sms gateway account
+- [Sign up](https://www.cm.com/register/?app=fbb5f379-99d4-4321-b1cc-607e47e9b20a) for a online sms gateway account
 - Find your API key in account settings
 
 ## Installation
