@@ -3,9 +3,9 @@
 namespace NotificationChannels\Cmsms\Test;
 
 use Illuminate\Support\Arr;
-use PHPUnit\Framework\TestCase;
 use NotificationChannels\Cmsms\CmsmsMessage;
 use NotificationChannels\Cmsms\Exceptions\InvalidMessage;
+use PHPUnit\Framework\TestCase;
 
 class CmsmsMessageTest extends TestCase
 {

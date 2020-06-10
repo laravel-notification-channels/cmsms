@@ -2,13 +2,13 @@
 
 namespace NotificationChannels\Cmsms\Test;
 
-use Mockery;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
-use Orchestra\Testbench\TestCase;
+use Mockery;
 use NotificationChannels\Cmsms\CmsmsClient;
 use NotificationChannels\Cmsms\CmsmsMessage;
 use NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification;
+use Orchestra\Testbench\TestCase;
 
 class CmsmsClientTest extends TestCase
 {

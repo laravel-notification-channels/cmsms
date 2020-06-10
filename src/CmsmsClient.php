@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace NotificationChannels\Cmsms;
 
-use SimpleXMLElement;
-use Illuminate\Support\Arr;
 use GuzzleHttp\Client as GuzzleClient;
+use Illuminate\Support\Arr;
 use NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification;
+use SimpleXMLElement;
 
 class CmsmsClient
 {
