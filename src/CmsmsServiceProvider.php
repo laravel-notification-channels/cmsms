@@ -19,7 +19,7 @@ class CmsmsServiceProvider extends ServiceProvider
                     throw InvalidConfiguration::configurationNotSet();
                 }
 
-                return new CmsmsClient(new GuzzleClient, $productToken);
+                return new CmsmsClient(new GuzzleClient(), $productToken);
             });
     }
 }

@@ -21,7 +21,7 @@ class CmsmsClient
 
     /**
      * @param GuzzleClient $client
-     * @param string $productToken
+     * @param string       $productToken
      */
     public function __construct(GuzzleClient $client, string $productToken)
     {
@@ -31,7 +31,8 @@ class CmsmsClient
 
     /**
      * @param CmsmsMessage $message
-     * @param string $recipient
+     * @param string       $recipient
+     *
      * @throws CouldNotSendNotification
      */
     public function send(CmsmsMessage $message, string $recipient)
@@ -41,7 +42,7 @@ class CmsmsClient
         }
 
         $response = $this->client->request('POST', static::GATEWAY_URL, [
-            'body' => $this->buildMessageXml($message, $recipient),
+            'body'    => $this->buildMessageXml($message, $recipient),
             'headers' => [
                 'Content-Type' => 'application/xml',
             ],
@@ -50,14 +51,15 @@ class CmsmsClient
         // API returns an empty string on success
         // On failure, only the error string is passed
         $body = $response->getBody()->getContents();
-        if (! empty($body)) {
+        if (!empty($body)) {
             throw CouldNotSendNotification::serviceRespondedWithAnError($body);
         }
     }
 
     /**
      * @param CmsmsMessage $message
-     * @param string $recipient
+     * @param string       $recipient
+     *
      * @return string
      */
     public function buildMessageXml(CmsmsMessage $message, string $recipient): string

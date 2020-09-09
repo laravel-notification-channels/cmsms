@@ -17,8 +17,8 @@ class CmsmsChannelTest extends TestCase
     {
         parent::setUp();
 
-        $this->notification = new TestNotification;
-        $this->notifiable = new TestNotifiable;
+        $this->notification = new TestNotification();
+        $this->notifiable = new TestNotifiable();
         $this->guzzle = Mockery::mock(new Client());
         $this->client = Mockery::mock(new CmsmsClient($this->guzzle, '00000FFF-0000-F0F0-F0F0-FFFFFFFFFFFF'));
         $this->channel = new CmsmsChannel($this->client);

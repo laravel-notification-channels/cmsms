@@ -22,14 +22,14 @@ class CmsmsChannel
     /**
      * Send the given notification.
      *
-     * @param mixed $notifiable
+     * @param mixed                                  $notifiable
      * @param \Illuminate\Notifications\Notification $notification
      *
      * @throws \NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification
      */
     public function send($notifiable, Notification $notification)
     {
-        if (! $recipient = $notifiable->routeNotificationFor('Cmsms')) {
+        if (!$recipient = $notifiable->routeNotificationFor('Cmsms')) {
             return;
         }
 

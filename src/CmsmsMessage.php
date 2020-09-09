@@ -36,6 +36,7 @@ class CmsmsMessage
 
     /**
      * @param string $body
+     *
      * @return $this
      */
     public function body(string $body)
@@ -47,8 +48,10 @@ class CmsmsMessage
 
     /**
      * @param string|int $originator
-     * @return $this
+     *
      * @throws InvalidMessage
+     *
+     * @return $this
      */
     public function originator($originator)
     {
@@ -63,12 +66,14 @@ class CmsmsMessage
 
     /**
      * @param string $reference
-     * @return $this
+     *
      * @throws InvalidMessage
+     *
+     * @return $this
      */
     public function reference(string $reference)
     {
-        if (empty($reference) || strlen($reference) > 32 || ! ctype_alnum($reference)) {
+        if (empty($reference) || strlen($reference) > 32 || !ctype_alnum($reference)) {
             throw InvalidMessage::invalidReference($reference);
         }
 
@@ -79,8 +84,10 @@ class CmsmsMessage
 
     /**
      * @param int $tariff Tariff in eurocent
-     * @return $this
+     *
      * @throws InvalidMessage
+     *
+     * @return $this
      */
     public function tariff(int $tariff)
     {
@@ -100,8 +107,10 @@ class CmsmsMessage
     /**
      * @param int $minimum
      * @param int $maximum
-     * @return $this
+     *
      * @throws InvalidMessage
+     *
+     * @return $this
      */
     public function multipart(int $minimum, int $maximum)
     {
@@ -121,9 +130,9 @@ class CmsmsMessage
     public function toXmlArray(): array
     {
         return array_filter([
-            'BODY' => $this->body,
-            'FROM' => $this->originator,
-            'REFERENCE' => $this->reference,
+            'BODY'                        => $this->body,
+            'FROM'                        => $this->originator,
+            'REFERENCE'                   => $this->reference,
             'MINIMUMNUMBEROFMESSAGEPARTS' => $this->minimumNumberOfMessageParts,
             'MAXIMUMNUMBEROFMESSAGEPARTS' => $this->maximumNumberOfMessageParts,
         ]);
@@ -131,6 +140,7 @@ class CmsmsMessage
 
     /**
      * @param string $body
+     *
      * @return static
      */
     public static function create($body = ''): self
