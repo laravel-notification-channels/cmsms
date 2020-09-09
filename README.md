@@ -1,12 +1,8 @@
 # CMSMS notifications channel for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/laravel-notification-channels/cmsms.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/cmsms)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Build Status](https://img.shields.io/travis/laravel-notification-channels/cmsms/master.svg?style=flat-square)](https://travis-ci.org/laravel-notification-channels/cmsms)
-[![StyleCI](https://styleci.io/repos/67046405/shield)](https://styleci.io/repos/67046405)
-[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/90fe40f4-4957-4e65-8630-a62cdb242b86.svg?style=flat-square)](https://insight.sensiolabs.com/projects/90fe40f4-4957-4e65-8630-a62cdb242b86)
-[![Quality Score](https://img.shields.io/scrutinizer/g/laravel-notification-channels/cmsms.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/cmsms)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/laravel-notification-channels/cmsms/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/cmsms/?branch=master)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/laravel-notification-channels/cmsms/run-tests?label=tests)
+![Check & fix styling](https://github.com/laravel-notification-channels/cmsms/workflows/Check%20&%20fix%20styling/badge.svg)
 [![Total Downloads](https://img.shields.io/packagist/dt/laravel-notification-channels/cmsms.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/cmsms)
 
 This package makes it easy to send [CMSMS messages](https://docs.cmtelecom.com/en/api/business-messaging-api/1.0/index) with Laravel.

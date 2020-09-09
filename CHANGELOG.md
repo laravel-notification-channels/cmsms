@@ -2,6 +2,10 @@
 
 All notable changes to `CMSMS` will be documented in this file
 
+## [2.2.0] - 2020-09-09
+#### Changed
+- Added support for Laravel 8.0
+
 ## [2.1.0] - 2020-03-04
 #### Changed
 - Added support for Laravel 7.0
