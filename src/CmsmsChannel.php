@@ -10,13 +10,12 @@ class CmsmsChannel
 {
     public function __construct(
         protected CmsmsClient $client,
-    )
-    {
+    ) {
     }
 
     public function send($notifiable, Notification $notification): void
     {
-        if (!$recipient = $notifiable->routeNotificationFor('Cmsms')) {
+        if (! $recipient = $notifiable->routeNotificationFor('Cmsms')) {
             return;
         }
 

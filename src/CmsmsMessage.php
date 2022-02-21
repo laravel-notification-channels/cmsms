@@ -20,8 +20,7 @@ class CmsmsMessage
 
     private function __construct(
         protected string $body = ''
-    )
-    {
+    ) {
         $this->body($body);
     }
 
@@ -45,7 +44,7 @@ class CmsmsMessage
 
     public function reference(string $reference): self
     {
-        if (empty($reference) || strlen($reference) > 32 || !ctype_alnum($reference)) {
+        if (empty($reference) || strlen($reference) > 32 || ! ctype_alnum($reference)) {
             throw InvalidMessage::invalidReference($reference);
         }
 
@@ -81,9 +80,9 @@ class CmsmsMessage
     public function toXmlArray(): array
     {
         return array_filter([
-            'BODY'                        => $this->body,
-            'FROM'                        => $this->originator,
-            'REFERENCE'                   => $this->reference,
+            'BODY' => $this->body,
+            'FROM' => $this->originator,
+            'REFERENCE' => $this->reference,
             'MINIMUMNUMBEROFMESSAGEPARTS' => $this->minimumNumberOfMessageParts,
             'MAXIMUMNUMBEROFMESSAGEPARTS' => $this->maximumNumberOfMessageParts,
         ]);
