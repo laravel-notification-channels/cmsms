@@ -17,11 +17,9 @@ class CmsmsClient
         protected GuzzleClient $client,
         protected string $productToken,
     )    {
-        $this->client = $client;
-        $this->productToken = $productToken;
     }
 
-    public function send(CmsmsMessage $message, string $recipient)
+    public function send(CmsmsMessage $message, string $recipient): void
     {
         if (is_null(Arr::get($message->toXmlArray(), 'FROM'))) {
             $message->originator(config('services.cmsms.originator'));

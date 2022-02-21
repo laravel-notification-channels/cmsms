@@ -10,7 +10,7 @@ use NotificationChannels\Cmsms\Exceptions\InvalidConfiguration;
 
 class CmsmsServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         $this->app->when(CmsmsChannel::class)
             ->needs(CmsmsClient::class)

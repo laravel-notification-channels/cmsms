@@ -14,7 +14,7 @@ class CmsmsChannel
     {
     }
 
-    public function send($notifiable, Notification $notification)
+    public function send($notifiable, Notification $notification): void
     {
         if (!$recipient = $notifiable->routeNotificationFor('Cmsms')) {
             return;
