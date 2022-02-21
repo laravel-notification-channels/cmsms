@@ -8,52 +8,31 @@ use NotificationChannels\Cmsms\Exceptions\InvalidMessage;
 
 class CmsmsMessage
 {
-    /** @var string */
-    protected $body;
+    protected string $originator = '';
 
-    /** @var string */
-    protected $originator;
+    protected string $reference = '';
 
-    /** @var string */
-    protected $reference;
+    protected int $tariff = 0;
 
-    /** @var int */
-    protected $tariff = 0;
+    protected ?int $minimumNumberOfMessageParts = null;
 
-    /** @var int */
-    protected $minimumNumberOfMessageParts;
+    protected ?int $maximumNumberOfMessageParts = null;
 
-    /** @var int */
-    protected $maximumNumberOfMessageParts;
-
-    /**
-     * @param string $body
-     */
-    private function __construct(string $body = '')
+    private function __construct(
+        protected string $body = ''
+    )
     {
         $this->body($body);
     }
 
-    /**
-     * @param string $body
-     *
-     * @return $this
-     */
-    public function body(string $body)
+    public function body(string $body): self
     {
         $this->body = trim($body);
 
         return $this;
     }
 
-    /**
-     * @param string|int $originator
-     *
-     * @throws InvalidMessage
-     *
-     * @return $this
-     */
-    public function originator($originator)
+    public function originator(string|int $originator): self
     {
         if (empty($originator) || strlen($originator) > 11) {
             throw InvalidMessage::invalidOriginator($originator);
@@ -64,14 +43,7 @@ class CmsmsMessage
         return $this;
     }
 
-    /**
-     * @param string $reference
-     *
-     * @throws InvalidMessage
-     *
-     * @return $this
-     */
-    public function reference(string $reference)
+    public function reference(string $reference): self
     {
         if (empty($reference) || strlen($reference) > 32 || !ctype_alnum($reference)) {
             throw InvalidMessage::invalidReference($reference);
@@ -82,37 +54,19 @@ class CmsmsMessage
         return $this;
     }
 
-    /**
-     * @param int $tariff Tariff in eurocent
-     *
-     * @throws InvalidMessage
-     *
-     * @return $this
-     */
-    public function tariff(int $tariff)
+    public function tariff(int $tariff): self
     {
         $this->tariff = $tariff;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getTariff(): int
     {
         return $this->tariff;
     }
 
-    /**
-     * @param int $minimum
-     * @param int $maximum
-     *
-     * @throws InvalidMessage
-     *
-     * @return $this
-     */
-    public function multipart(int $minimum, int $maximum)
+    public function multipart(int $minimum, int $maximum): self
     {
         if ($maximum > 8 || $minimum >= $maximum) {
             throw InvalidMessage::invalidMultipart($minimum, $maximum);
@@ -124,9 +78,6 @@ class CmsmsMessage
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function toXmlArray(): array
     {
         return array_filter([
@@ -138,12 +89,7 @@ class CmsmsMessage
         ]);
     }
 
-    /**
-     * @param string $body
-     *
-     * @return static
-     */
-    public static function create($body = ''): self
+    public static function create(string $body = ''): self
     {
         return new static($body);
     }

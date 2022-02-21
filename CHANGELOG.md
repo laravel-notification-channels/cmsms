@@ -2,6 +2,14 @@
 
 All notable changes to `CMSMS` will be documented in this file
 
+## [3.0.0] - 2020-09-09
+#### Changed
+- General cleanup of package. Added return types.
+- Added support for Laravel 9.0
+- Added support for PHP 8.1
+- Dropped support for Laravel 8 and below.
+- Dropped support for PHP 8.0 and below.
+
 ## [2.2.0] - 2020-09-09
 #### Changed
 - Added support for Laravel 8.0
