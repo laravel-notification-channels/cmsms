@@ -8,28 +8,14 @@ use Illuminate\Notifications\Notification;
 
 class CmsmsChannel
 {
-    /** @var CmsmsClient */
-    protected $client;
-
-    /**
-     * @param CmsmsClient $client
-     */
-    public function __construct(CmsmsClient $client)
-    {
-        $this->client = $client;
+    public function __construct(
+        protected CmsmsClient $client,
+    ) {
     }
 
-    /**
-     * Send the given notification.
-     *
-     * @param mixed                                  $notifiable
-     * @param \Illuminate\Notifications\Notification $notification
-     *
-     * @throws \NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification
-     */
-    public function send($notifiable, Notification $notification)
+    public function send($notifiable, Notification $notification): void
     {
-        if (!$recipient = $notifiable->routeNotificationFor('Cmsms')) {
+        if (! $recipient = $notifiable->routeNotificationFor('Cmsms')) {
             return;
         }
 

@@ -1,7 +1,7 @@
 # CMSMS notifications channel for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/laravel-notification-channels/cmsms.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/cmsms)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/laravel-notification-channels/cmsms/run-tests?label=tests)
+[![run-tests](https://github.com/laravel-notification-channels/cmsms/actions/workflows/run-tests.yml/badge.svg)](https://github.com/laravel-notification-channels/cmsms/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/laravel-notification-channels/cmsms.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/cmsms)
 
 This package makes it easy to send [CMSMS messages](https://docs.cmtelecom.com/en/api/business-messaging-api/1.0/index) with Laravel.

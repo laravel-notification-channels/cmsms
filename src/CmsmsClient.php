@@ -11,38 +11,22 @@ use SimpleXMLElement;
 
 class CmsmsClient
 {
-    const GATEWAY_URL = 'https://sgw01.cm.nl/gateway.ashx';
+    public const GATEWAY_URL = 'https://sgw01.cm.nl/gateway.ashx';
 
-    /** @var GuzzleClient */
-    protected $client;
-
-    /** @var string */
-    protected $productToken;
-
-    /**
-     * @param GuzzleClient $client
-     * @param string       $productToken
-     */
-    public function __construct(GuzzleClient $client, string $productToken)
-    {
-        $this->client = $client;
-        $this->productToken = $productToken;
+    public function __construct(
+        protected GuzzleClient $client,
+        protected string $productToken,
+    ) {
     }
 
-    /**
-     * @param CmsmsMessage $message
-     * @param string       $recipient
-     *
-     * @throws CouldNotSendNotification
-     */
-    public function send(CmsmsMessage $message, string $recipient)
+    public function send(CmsmsMessage $message, string $recipient): void
     {
         if (is_null(Arr::get($message->toXmlArray(), 'FROM'))) {
             $message->originator(config('services.cmsms.originator'));
         }
 
         $response = $this->client->request('POST', static::GATEWAY_URL, [
-            'body'    => $this->buildMessageXml($message, $recipient),
+            'body' => $this->buildMessageXml($message, $recipient),
             'headers' => [
                 'Content-Type' => 'application/xml',
             ],
@@ -51,17 +35,11 @@ class CmsmsClient
         // API returns an empty string on success
         // On failure, only the error string is passed
         $body = $response->getBody()->getContents();
-        if (!empty($body)) {
+        if (! empty($body)) {
             throw CouldNotSendNotification::serviceRespondedWithAnError($body);
         }
     }
 
-    /**
-     * @param CmsmsMessage $message
-     * @param string       $recipient
-     *
-     * @return string
-     */
     public function buildMessageXml(CmsmsMessage $message, string $recipient): string
     {
         $xml = new SimpleXMLElement('<MESSAGES/>');
