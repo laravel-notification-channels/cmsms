@@ -68,7 +68,6 @@ Notice: The originator can contain a maximum of 11 alphanumeric characters.
 Now you can use the channel in your `via()` method inside the notification:
 
 ``` php
-use NotificationChannels\Cmsms\CmsmsChannel;
 use NotificationChannels\Cmsms\CmsmsMessage;
 use Illuminate\Notifications\Notification;
 
@@ -76,7 +75,7 @@ class VpsServerOrdered extends Notification
 {
     public function via($notifiable)
     {
-        return [CmsmsChannel::class];
+        return ['cmsms'];
     }
 
     public function toCmsms($notifiable)
