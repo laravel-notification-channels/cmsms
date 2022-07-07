@@ -2,7 +2,11 @@
 
 All notable changes to `CMSMS` will be documented in this file
 
-## [3.0.0] - 2020-09-09
+## [3.1.0] - 2022-07-07
+#### Changed
+- Add custom creator alias to ChannelManager (#16) by @mabdullahsari
+
+## [3.0.0] - 2022-07-05
 #### Changed
 - General cleanup of package. Added return types.
 - Added support for Laravel 9.0
