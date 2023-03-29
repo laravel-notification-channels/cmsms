@@ -2,6 +2,10 @@
 
 All notable changes to `CMSMS` will be documented in this file
 
+## [3.2.0] - 2023-03-29
+#### Changed
+- Added support for Laravel 10.0 (#17) by @charleskoko
+
 ## [3.1.0] - 2022-07-07
 #### Changed
 - Add custom creator alias to ChannelManager (#16) by @mabdullahsari
