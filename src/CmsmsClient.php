@@ -11,7 +11,7 @@ use SimpleXMLElement;
 
 class CmsmsClient
 {
-    public const GATEWAY_URL = 'https://sgw01.cm.nl/gateway.ashx';
+    public const GATEWAY_URL = 'https://gw.messaging.cm.com/gateway.ashx';
 
     public function __construct(
         protected GuzzleClient $client,
