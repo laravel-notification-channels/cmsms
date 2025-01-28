@@ -79,4 +79,48 @@ class CmsmsClientTest extends TestCase
 
         $this->client->send($this->message, '00301234');
     }
+
+    /** @test */
+    public function it_includes_tariff_data()
+    {
+        $message = clone $this->message;
+        $message->tariff(20);
+
+        $messageJson = $this->client->buildMessageJson($message, '00301234');
+
+        $messageJsonObject = json_decode($messageJson);
+
+        $this->assertTrue(isset($messageJsonObject->messages->tariff));
+        $this->assertEquals(20, $messageJsonObject->messages->tariff);
+    }
+
+    /** @test */
+    public function it_includes_multipart_data()
+    {
+        $message = clone $this->message;
+        $message->multipart(2, 6);
+
+        $messageJson = $this->client->buildMessageJson($message, '00301234');
+
+        $messageJsonObject = json_decode($messageJson);
+
+        $this->assertTrue(isset($messageJsonObject->messages->msg[0]->minimumNumberOfMessageParts));
+        $this->assertEquals(2, $messageJsonObject->messages->msg[0]->minimumNumberOfMessageParts);
+        $this->assertTrue(isset($messageJsonObject->messages->msg[0]->minimumNumberOfMessageParts));
+        $this->assertEquals(6, $messageJsonObject->messages->msg[0]->maximumNumberOfMessageParts);
+    }
+
+    /** @test */
+    public function it_includes_reference_data()
+    {
+        $message = clone $this->message;
+        $message->reference('ABC');
+
+        $messageJson = $this->client->buildMessageJson($message, '00301234');
+
+        $messageJsonObject = json_decode($messageJson);
+
+        $this->assertTrue(isset($messageJsonObject->messages->msg[0]->reference));
+        $this->assertEquals('ABC', $messageJsonObject->messages->msg[0]->reference);
+    }
 }

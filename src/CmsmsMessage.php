@@ -63,6 +63,11 @@ class CmsmsMessage
         return $this;
     }
 
+    public function getReference(): string
+    {
+        return $this->reference;
+    }
+
     public function tariff(int $tariff): self
     {
         $this->tariff = $tariff;
@@ -87,15 +92,14 @@ class CmsmsMessage
         return $this;
     }
 
-    public function toXmlArray(): array
+    public function getMinimumNumberOfMessageParts(): ?int
     {
-        return array_filter([
-            'BODY' => $this->body,
-            'FROM' => $this->originator,
-            'REFERENCE' => $this->reference,
-            'MINIMUMNUMBEROFMESSAGEPARTS' => $this->minimumNumberOfMessageParts,
-            'MAXIMUMNUMBEROFMESSAGEPARTS' => $this->maximumNumberOfMessageParts,
-        ]);
+        return $this->minimumNumberOfMessageParts;
+    }
+
+    public function getMaximumNumberOfMessageParts(): ?int
+    {
+        return $this->maximumNumberOfMessageParts;
     }
 
     public static function create(string $body = ''): self

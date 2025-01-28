@@ -20,7 +20,7 @@ class CmsmsClient
 
     public function send(CmsmsMessage $message, string $recipient): void
     {
-        if (is_null(Arr::get($message->toXmlArray(), 'FROM'))) {
+        if (empty($message->getOriginator())) {
             $message->originator(config('services.cmsms.originator'));
         }
 
@@ -49,11 +49,24 @@ class CmsmsClient
     {
         $encodingDetectionType = config('services.cmsms.encoding_detection_type', 'AUTO');
 
-        $body = [
-            'content' => $message->getBody(),
-        ];
+        $body = [];
+        $body['content'] = $message->getBody();
         if (strtoupper($encodingDetectionType) === 'AUTO') {
             $body['type'] = 'AUTO';
+        }
+
+        $minimumNumberOfMessageParts = [];
+        if($message->getMinimumNumberOfMessageParts() !== null) {
+            $minimumNumberOfMessageParts['minimumNumberOfMessageParts'] = $message->getMinimumNumberOfMessageParts();
+        }
+        $maximumNumberOfMessageParts = [];
+        if($message->getMaximumNumberOfMessageParts() !== null) {
+            $maximumNumberOfMessageParts['maximumNumberOfMessageParts'] = $message->getMaximumNumberOfMessageParts();
+        }
+
+        $reference = [];
+        if($message->getReference() !== null){
+            $reference['reference'] = $message->getReference();
         }
 
         $json = [
@@ -61,6 +74,7 @@ class CmsmsClient
                 'authentication' => [
                     'productToken' => $this->productToken,
                 ],
+                'tariff' => $message->getTariff(),
                 'msg' => [[
                     'body' => $body,
                     'to' => [[
@@ -68,6 +82,9 @@ class CmsmsClient
                     ]],
                     'dcs' => strtoupper($encodingDetectionType) === 'AUTO' ? 0 : $encodingDetectionType,
                     'from' => $message->getOriginator(),
+                    ...$minimumNumberOfMessageParts,
+                    ...$maximumNumberOfMessageParts,
+                    ...$reference,
                 ]],
             ],
         ];

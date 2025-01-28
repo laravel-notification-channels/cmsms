@@ -22,7 +22,7 @@ class CmsmsMessageTest extends TestCase
     {
         $message = CmsmsMessage::create('Foo');
 
-        $this->assertEquals('Foo', Arr::get($message->toXmlArray(), 'BODY'));
+        $this->assertEquals('Foo', $message->getBody());
     }
 
     /** @test */
@@ -31,7 +31,7 @@ class CmsmsMessageTest extends TestCase
         $message = CmsmsMessage::create('Foo');
 
         $this->assertInstanceOf(CmsmsMessage::class, $message);
-        $this->assertEquals('Foo', Arr::get($message->toXmlArray(), 'BODY'));
+        $this->assertEquals('Foo', $message->getBody());
     }
 
     /** @test */
@@ -39,7 +39,7 @@ class CmsmsMessageTest extends TestCase
     {
         $message = CmsmsMessage::create('Bar');
 
-        $this->assertEquals('Bar', Arr::get($message->toXmlArray(), 'BODY'));
+        $this->assertEquals('Bar', $message->getBody());
     }
 
     /** @test */
@@ -47,7 +47,7 @@ class CmsmsMessageTest extends TestCase
     {
         $message = CmsmsMessage::create()->originator('APPNAME');
 
-        $this->assertEquals('APPNAME', Arr::get($message->toXmlArray(), 'FROM'));
+        $this->assertEquals('APPNAME', $message->getOriginator());
     }
 
     /** @test */
@@ -71,7 +71,7 @@ class CmsmsMessageTest extends TestCase
     {
         $message = CmsmsMessage::create()->reference('REFERENCE123');
 
-        $this->assertEquals('REFERENCE123', Arr::get($message->toXmlArray(), 'REFERENCE'));
+        $this->assertEquals('REFERENCE123', $message->getReference());
     }
 
     /** @test */
@@ -118,8 +118,8 @@ class CmsmsMessageTest extends TestCase
     {
         $message = CmsmsMessage::create()->multipart(1, 4);
 
-        $this->assertEquals(1, Arr::get($message->toXmlArray(), 'MINIMUMNUMBEROFMESSAGEPARTS'));
-        $this->assertEquals(4, Arr::get($message->toXmlArray(), 'MAXIMUMNUMBEROFMESSAGEPARTS'));
+        $this->assertEquals(1, $message->getMinimumNumberOfMessageParts());
+        $this->assertEquals(4, $message->getMaximumNumberOfMessageParts());
     }
 
     public function it_cannot_set_more_than_8_parts_to_multipart()
@@ -135,15 +135,5 @@ class CmsmsMessageTest extends TestCase
         $this->expectException(InvalidMessage::class);
 
         CmsmsMessage::create()->multipart(4, 3);
-    }
-
-    /** @test */
-    public function it_xml_contains_only_filled_parameters()
-    {
-        $message = CmsmsMessage::create('Foo');
-
-        $this->assertEquals([
-            'BODY' => 'Foo',
-        ], $message->toXmlArray());
     }
 }
