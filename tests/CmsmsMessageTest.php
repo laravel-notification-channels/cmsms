@@ -2,7 +2,6 @@
 
 namespace NotificationChannels\Cmsms\Test;
 
-use Illuminate\Support\Arr;
 use NotificationChannels\Cmsms\CmsmsMessage;
 use NotificationChannels\Cmsms\Exceptions\InvalidMessage;
 use PHPUnit\Framework\TestCase;

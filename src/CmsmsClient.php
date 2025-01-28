@@ -56,16 +56,16 @@ class CmsmsClient
         }
 
         $minimumNumberOfMessageParts = [];
-        if($message->getMinimumNumberOfMessageParts() !== null) {
+        if ($message->getMinimumNumberOfMessageParts() !== null) {
             $minimumNumberOfMessageParts['minimumNumberOfMessageParts'] = $message->getMinimumNumberOfMessageParts();
         }
         $maximumNumberOfMessageParts = [];
-        if($message->getMaximumNumberOfMessageParts() !== null) {
+        if ($message->getMaximumNumberOfMessageParts() !== null) {
             $maximumNumberOfMessageParts['maximumNumberOfMessageParts'] = $message->getMaximumNumberOfMessageParts();
         }
 
         $reference = [];
-        if($message->getReference() !== null){
+        if ($message->getReference() !== null) {
             $reference['reference'] = $message->getReference();
         }
 
