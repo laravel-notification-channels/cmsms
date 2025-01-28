@@ -4,7 +4,6 @@ namespace NotificationChannels\Cmsms\Test;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 use Mockery;
 use NotificationChannels\Cmsms\CmsmsClient;
