@@ -8,6 +8,7 @@ All notable changes to `CMSMS` will be documented in this file
 - Changed CM endpoint
 #### Added
 - Added config value for encoding detection type
+- Two events for success and failure: `SMSSentSuccessfullyEvent` and `SMSSendingFailedEvent`
 
 ## [3.3.0] - 2024-03-22
 #### Added

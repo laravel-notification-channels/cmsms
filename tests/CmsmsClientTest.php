@@ -4,9 +4,13 @@ namespace NotificationChannels\Cmsms\Test;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Event;
 use Mockery;
 use NotificationChannels\Cmsms\CmsmsClient;
 use NotificationChannels\Cmsms\CmsmsMessage;
+use NotificationChannels\Cmsms\Events\SMSSendingFailedEvent;
+use NotificationChannels\Cmsms\Events\SMSSentSuccessfullyEvent;
 use NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification;
 use Orchestra\Testbench\TestCase;
 
@@ -122,5 +126,39 @@ class CmsmsClientTest extends TestCase
 
         $this->assertTrue(isset($messageJsonObject->messages->msg[0]->reference));
         $this->assertEquals('ABC', $messageJsonObject->messages->msg[0]->reference);
+    }
+
+    /** @test */
+    public function it_dispatches_a_success_event()
+    {
+        Event::fake();
+
+        $this->guzzle
+            ->shouldReceive('request')
+            ->once()
+            ->andReturn(new Response(200, [], '{"details": "Created 1 message(s)", "errorCode": 0}'));
+
+        $this->client->send($this->message, '00301234');
+
+        Event::assertDispatched(SMSSentSuccessfullyEvent::class);
+    }
+
+    /** @test */
+    public function it_dispatches_a_failure_event()
+    {
+        Event::fake();
+
+        $this->guzzle
+            ->shouldReceive('request')
+            ->once()
+            ->andReturn(new Response(200, [], '{"details": "Some error message", "errorCode": 1}'));
+
+        try {
+            $this->client->send($this->message, '00301234');
+        } catch (CouldNotSendNotification $e) {
+            // Do nothing, we know about the exception
+        }
+
+        Event::assertDispatched(SMSSendingFailedEvent::class);
     }
 }

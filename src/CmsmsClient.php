@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace NotificationChannels\Cmsms;
 
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
+use NotificationChannels\Cmsms\Events\SMSSendingFailedEvent;
+use NotificationChannels\Cmsms\Events\SMSSentSuccessfullyEvent;
 use NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification;
+use NotificationChannels\Cmsms\Exceptions\InvalidMessage;
 
 class CmsmsClient
 {
@@ -18,14 +22,21 @@ class CmsmsClient
     ) {
     }
 
+    /**
+     * @throws InvalidMessage
+     * @throws GuzzleException
+     * @throws CouldNotSendNotification
+     */
     public function send(CmsmsMessage $message, string $recipient): void
     {
         if (empty($message->getOriginator())) {
             $message->originator(config('services.cmsms.originator'));
         }
 
+        $payload = $this->buildMessageJson($message, $recipient);
+
         $response = $this->client->request('POST', static::GATEWAY_URL, [
-            'body' => $this->buildMessageJson($message, $recipient),
+            'body' => $payload,
             'headers' => [
                 'accept' => 'application/json',
                 'content-type' => 'application/json',
@@ -38,8 +49,11 @@ class CmsmsClient
         $body = $response->getBody()->getContents();
         $errorCode = Arr::get(json_decode($body, true), 'errorCode');
         if ($errorCode !== 0) {
+            SMSSendingFailedEvent::dispatch($body);
             throw CouldNotSendNotification::serviceRespondedWithAnError($body);
         }
+
+        SMSSentSuccessfullyEvent::dispatch($payload);
     }
 
     /**

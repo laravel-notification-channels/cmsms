@@ -108,6 +108,11 @@ public function routeNotificationForCmsms()
 - `tariff()`: Accepts a integer value for your message tariff. The unit is eurocent. Requires the `originator` to be set to a specific value. Contact CM for this tariff value. CM also must enable this feature for your contract manually.
 - `multipart($minimum, $maximum)`: Accepts a 0 to 8 integer range which allows multipart messages. See the [documentation from CM](https://dashboard.onlinesmsgateway.com/docs#send-a-message-multipart) for more information.
 
+### Available events
+- `SMSSentSuccessfullyEvent`: This event will be fired after the message was sent. The event will contain the payload we have sent to CM.
+- `SMSSendingFailedEvent`: This event will be fired if the message was not sent. The event will contain the response body we received from CM.
+
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
