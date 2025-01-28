@@ -2,6 +2,21 @@
 
 All notable changes to `CMSMS` will be documented in this file
 
+## [4.0.0] - 2025-02-??
+#### Changed
+- Moved from XML to JSON for the request body
+- Changed CM endpoint
+#### Added
+- Added config value for encoding detection type
+
+## [3.3.0] - 2024-03-22
+#### Added
+- Laravel 11 support
+
+## [3.3.0] - 2024-03-22
+#### Changed
+- Update CM endpoint by @marventhieme
+
 ## [3.2.0] - 2023-03-29
 #### Changed
 - Added support for Laravel 10.0 (#17) by @charleskoko
