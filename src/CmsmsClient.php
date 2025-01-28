@@ -52,7 +52,7 @@ class CmsmsClient
         $body = [
             'content' => $message->getBody(),
         ];
-        if(strtoupper($encodingDetectionType) === 'AUTO'){
+        if (strtoupper($encodingDetectionType) === 'AUTO') {
             $body['type'] = 'AUTO';
         }
 
