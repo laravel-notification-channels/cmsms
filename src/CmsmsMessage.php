@@ -31,6 +31,11 @@ class CmsmsMessage
         return $this;
     }
 
+    public function getBody(): string
+    {
+        return $this->body;
+    }
+
     public function originator(string|int $originator): self
     {
         if (empty($originator) || strlen($originator) > 11) {
@@ -40,6 +45,11 @@ class CmsmsMessage
         $this->originator = (string) $originator;
 
         return $this;
+    }
+
+    public function getOriginator(): string
+    {
+        return $this->originator;
     }
 
     public function reference(string $reference): self

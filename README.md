@@ -57,11 +57,14 @@ Add your CMSMS Product Token and default originator (name or number of sender) t
 'cmsms' => [
     'product_token' => env('CMSMS_PRODUCT_TOKEN'),
     'originator' => env('CMSMS_ORIGINATOR'),
+    'encoding_detection_type' => env('CMSMS_ENCODING_DETECTION_TYPE', 'AUTO'),
 ],
 ...
 ```
 
-Notice: The originator can contain a maximum of 11 alphanumeric characters.
+Notice:
+- The originator can contain a maximum of 11 alphanumeric characters.
+- Read about encoding detection here: https://developers.cm.com/messaging/docs/sms#auto-detect-encoding
 
 ## Usage
 

@@ -43,7 +43,7 @@ class CmsmsClientTest extends TestCase
         $this->guzzle
             ->shouldReceive('request')
             ->once()
-            ->andReturn(new Response(200, [], ''));
+            ->andReturn(new Response(200, [], '{"details": "Created 1 message(s)", "errorCode": 0}'));
 
         $this->client->send($this->message, '00301234');
     }
@@ -62,7 +62,7 @@ class CmsmsClientTest extends TestCase
         $this->guzzle
             ->shouldReceive('request')
             ->once()
-            ->andReturn(new Response(200, [], ''));
+            ->andReturn(new Response(200, [], '{"details": "Created 1 message(s)", "errorCode": 0}'));
 
         $this->client->send($message, '00301234');
     }
@@ -75,21 +75,8 @@ class CmsmsClientTest extends TestCase
         $this->guzzle
             ->shouldReceive('request')
             ->once()
-            ->andReturn(new Response(200, [], 'error'));
+            ->andReturn(new Response(200, [], '{"details": "Some error message", "errorCode": 1}'));
 
         $this->client->send($this->message, '00301234');
-    }
-
-    /** @test */
-    public function it_includes_tariff_in_xml()
-    {
-        $message = clone $this->message;
-        $message->tariff(20);
-
-        $messageXml = $this->client->buildMessageXml($message, '00301234');
-        $parsedXml = simplexml_load_string($messageXml);
-
-        $this->assertFalse(empty($parsedXml->TARIFF));
-        $this->assertEquals(20, (int) $parsedXml->TARIFF);
     }
 }

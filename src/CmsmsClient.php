@@ -7,11 +7,10 @@ namespace NotificationChannels\Cmsms;
 use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Support\Arr;
 use NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification;
-use SimpleXMLElement;
 
 class CmsmsClient
 {
-    public const GATEWAY_URL = 'https://gw.messaging.cm.com/gateway.ashx';
+    public const GATEWAY_URL = 'https://gw.cmtelecom.com/v1.0/message';
 
     public function __construct(
         protected GuzzleClient $client,
@@ -26,37 +25,53 @@ class CmsmsClient
         }
 
         $response = $this->client->request('POST', static::GATEWAY_URL, [
-            'body' => $this->buildMessageXml($message, $recipient),
+            'body' => $this->buildMessageJson($message, $recipient),
             'headers' => [
-                'Content-Type' => 'application/xml',
+                'accept' => 'application/json',
+                'content-type' => 'application/json',
             ],
         ]);
 
-        // API returns an empty string on success
-        // On failure, only the error string is passed
+        /**
+         * If error code is 0, the message was sent successfully.
+         */
         $body = $response->getBody()->getContents();
-        if (! empty($body)) {
+        $errorCode = Arr::get(json_decode($body, true), 'errorCode');
+        if ($errorCode !== 0) {
             throw CouldNotSendNotification::serviceRespondedWithAnError($body);
         }
     }
 
-    public function buildMessageXml(CmsmsMessage $message, string $recipient): string
+    /**
+     * See: https://developers.cm.com/messaging/reference/messages_sendmessage-1
+     */
+    public function buildMessageJson(CmsmsMessage $message, string $recipient): string
     {
-        $xml = new SimpleXMLElement('<MESSAGES/>');
+        $encodingDetectionType = config('services.cmsms.encoding_detection_type', 'AUTO');
 
-        $xml->addChild('AUTHENTICATION')
-            ->addChild('PRODUCTTOKEN', $this->productToken);
-
-        if ($tariff = $message->getTariff()) {
-            $xml->addChild('TARIFF', (string) $tariff);
+        $body = [
+            'content' => $message->getBody(),
+        ];
+        if(strtoupper($encodingDetectionType) === 'AUTO'){
+            $body['type'] = 'AUTO';
         }
 
-        $msg = $xml->addChild('MSG');
-        foreach ($message->toXmlArray() as $name => $value) {
-            $msg->addChild($name, (string) $value);
-        }
-        $msg->addChild('TO', $recipient);
+        $json = [
+            'messages' => [
+                'authentication' => [
+                    'productToken' => $this->productToken,
+                ],
+                'msg' => [[
+                    'body' => $body,
+                    'to' => [[
+                        'number' => $recipient,
+                    ]],
+                    'dcs' => strtoupper($encodingDetectionType) === 'AUTO' ? 0 : $encodingDetectionType,
+                    'from' => $message->getOriginator(),
+                ]],
+            ],
+        ];
 
-        return $xml->asXML();
+        return json_encode($json);
     }
 }
