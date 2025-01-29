@@ -12,6 +12,8 @@ class CmsmsMessage
 
     protected string $reference = '';
 
+    protected string $encodingDetectionType = 'AUTO';
+
     protected ?int $minimumNumberOfMessageParts = null;
 
     protected ?int $maximumNumberOfMessageParts = null;
@@ -86,6 +88,18 @@ class CmsmsMessage
     public function getMaximumNumberOfMessageParts(): ?int
     {
         return $this->maximumNumberOfMessageParts;
+    }
+
+    public function encodingDetectionType(string|int $encodingDetectionType): self
+    {
+        $this->encodingDetectionType = (string) $encodingDetectionType;
+
+        return $this;
+    }
+
+    public function getEncodingDetectionType(): string
+    {
+        return $this->encodingDetectionType;
     }
 
     public static function create(string $body = ''): self

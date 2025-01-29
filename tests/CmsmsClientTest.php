@@ -114,6 +114,35 @@ class CmsmsClientTest extends TestCase
     }
 
     /** @test */
+    public function it_includes_encoding_detection_type_data_in_body()
+    {
+        $message = clone $this->message;
+        $message->encodingDetectionType('AUTO');
+
+        $messageJson = $this->client->buildMessageJson($message, '00301234');
+
+        $messageJsonObject = json_decode($messageJson);
+
+        $this->assertTrue(isset($messageJsonObject->messages->msg[0]->body->type));
+        $this->assertEquals('AUTO', $messageJsonObject->messages->msg[0]->body->type);
+        $this->assertEquals('0', $messageJsonObject->messages->msg[0]->dcs);
+    }
+
+    /** @test */
+    public function it_includes_encoding_detection_type_data_in_message()
+    {
+        $message = clone $this->message;
+        $message->encodingDetectionType(1);
+
+        $messageJson = $this->client->buildMessageJson($message, '00301234');
+
+        $messageJsonObject = json_decode($messageJson);
+
+        $this->assertFalse(isset($messageJsonObject->messages->msg[0]->body->type));
+        $this->assertEquals('1', $messageJsonObject->messages->msg[0]->dcs);
+    }
+
+    /** @test */
     public function it_dispatches_a_success_event()
     {
         Event::fake();

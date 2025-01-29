@@ -62,11 +62,9 @@ class CmsmsClient
      */
     public function buildMessageJson(CmsmsMessage $message, string $recipient): string
     {
-        $encodingDetectionType = config('services.cmsms.encoding_detection_type', 'AUTO');
-
         $body = [];
         $body['content'] = $message->getBody();
-        if (strtoupper($encodingDetectionType) === 'AUTO') {
+        if (strtoupper($message->getEncodingDetectionType()) === 'AUTO') {
             $body['type'] = 'AUTO';
         }
 
@@ -94,7 +92,7 @@ class CmsmsClient
                     'to' => [[
                         'number' => $recipient,
                     ]],
-                    'dcs' => strtoupper($encodingDetectionType) === 'AUTO' ? 0 : $encodingDetectionType,
+                    'dcs' => strtoupper($message->getEncodingDetectionType()) === 'AUTO' ? '0' : $message->getEncodingDetectionType(),
                     'from' => $message->getOriginator(),
                     ...$minimumNumberOfMessageParts,
                     ...$maximumNumberOfMessageParts,

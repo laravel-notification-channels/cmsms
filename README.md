@@ -57,14 +57,11 @@ Add your CMSMS Product Token and default originator (name or number of sender) t
 'cmsms' => [
     'product_token' => env('CMSMS_PRODUCT_TOKEN'),
     'originator' => env('CMSMS_ORIGINATOR'),
-    'encoding_detection_type' => env('CMSMS_ENCODING_DETECTION_TYPE', 'AUTO'),
 ],
 ...
 ```
 
-Notice:
-- The originator can contain a maximum of 11 alphanumeric characters.
-- Read about encoding detection here: https://developers.cm.com/messaging/docs/sms#auto-detect-encoding
+Notice: The originator can contain a maximum of 11 alphanumeric characters.
 
 ## Usage
 
@@ -105,6 +102,7 @@ public function routeNotificationForCmsms()
 - `body('')`: Accepts a string value for the message body.
 - `originator('')`: Accepts a string value between 1 and 11 characters, used as the message sender name.
 - `reference('')`: Accepts a string value for your message reference. This information will be returned in a status report so you can match the message and it's status. Restrictions: 1 - 32 alphanumeric characters. Reference will not work for demo accounts.
+- `encodingDetectionType('')`: Read about encoding detection here: https://developers.cm.com/messaging/docs/sms#auto-detect-encoding
 - `multipart($minimum, $maximum)`: Accepts a 0 to 8 integer range which allows multipart messages. See the [documentation from CM](https://dashboard.onlinesmsgateway.com/docs#send-a-message-multipart) for more information.
 
 ### Available events
