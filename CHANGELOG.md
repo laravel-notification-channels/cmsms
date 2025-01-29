@@ -2,7 +2,7 @@
 
 All notable changes to `CMSMS` will be documented in this file
 
-## [4.0.0] - 2025-02-??
+## [4.0.0] - 2025-01-29
 #### Changed
 - Moved from XML to JSON for the request body
 - Changed CM endpoint
