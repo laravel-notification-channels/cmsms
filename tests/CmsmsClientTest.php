@@ -89,9 +89,9 @@ class CmsmsClientTest extends TestCase
         $message = clone $this->message;
         $message->multipart(2, 6);
 
-        $messageJson = $this->client->buildMessageJson($message, '00301234');
+        $messageJson = $this->client->buildMessagePayload($message, '00301234');
 
-        $messageJsonObject = json_decode($messageJson);
+        $messageJsonObject = json_decode(json_encode($messageJson));
 
         $this->assertTrue(isset($messageJsonObject->messages->msg[0]->minimumNumberOfMessageParts));
         $this->assertEquals(2, $messageJsonObject->messages->msg[0]->minimumNumberOfMessageParts);
@@ -105,9 +105,9 @@ class CmsmsClientTest extends TestCase
         $message = clone $this->message;
         $message->reference('ABC');
 
-        $messageJson = $this->client->buildMessageJson($message, '00301234');
+        $messageJson = $this->client->buildMessagePayload($message, '00301234');
 
-        $messageJsonObject = json_decode($messageJson);
+        $messageJsonObject = json_decode(json_encode($messageJson));
 
         $this->assertTrue(isset($messageJsonObject->messages->msg[0]->reference));
         $this->assertEquals('ABC', $messageJsonObject->messages->msg[0]->reference);
@@ -119,9 +119,9 @@ class CmsmsClientTest extends TestCase
         $message = clone $this->message;
         $message->encodingDetectionType('AUTO');
 
-        $messageJson = $this->client->buildMessageJson($message, '00301234');
+        $messageJson = $this->client->buildMessagePayload($message, '00301234');
 
-        $messageJsonObject = json_decode($messageJson);
+        $messageJsonObject = json_decode(json_encode($messageJson));
 
         $this->assertTrue(isset($messageJsonObject->messages->msg[0]->body->type));
         $this->assertEquals('AUTO', $messageJsonObject->messages->msg[0]->body->type);
@@ -134,9 +134,9 @@ class CmsmsClientTest extends TestCase
         $message = clone $this->message;
         $message->encodingDetectionType(1);
 
-        $messageJson = $this->client->buildMessageJson($message, '00301234');
+        $messageJson = $this->client->buildMessagePayload($message, '00301234');
 
-        $messageJsonObject = json_decode($messageJson);
+        $messageJsonObject = json_decode(json_encode($messageJson));
 
         $this->assertFalse(isset($messageJsonObject->messages->msg[0]->body->type));
         $this->assertEquals('1', $messageJsonObject->messages->msg[0]->dcs);

@@ -33,7 +33,7 @@ class CmsmsClient
             $message->originator(config('services.cmsms.originator'));
         }
 
-        $payload = $this->buildMessageJson($message, $recipient);
+        $payload = $this->buildMessagePayload($message, $recipient);
 
         $response = $this->client->request('POST', static::GATEWAY_URL, [
             'body' => $payload,
@@ -60,7 +60,7 @@ class CmsmsClient
     /**
      * See: https://developers.cm.com/messaging/reference/messages_sendmessage-1
      */
-    public function buildMessageJson(CmsmsMessage $message, string $recipient): string
+    public function buildMessagePayload(CmsmsMessage $message, string $recipient): array
     {
         $body = [];
         $body['content'] = $message->getBody();
@@ -82,7 +82,7 @@ class CmsmsClient
             $reference['reference'] = $message->getReference();
         }
 
-        $json = [
+        return [
             'messages' => [
                 'authentication' => [
                     'productToken' => $this->productToken,
@@ -100,7 +100,5 @@ class CmsmsClient
                 ]],
             ],
         ];
-
-        return json_encode($json);
     }
 }
