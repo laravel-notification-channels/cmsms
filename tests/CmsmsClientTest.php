@@ -84,20 +84,6 @@ class CmsmsClientTest extends TestCase
     }
 
     /** @test */
-    public function it_includes_tariff_data()
-    {
-        $message = clone $this->message;
-        $message->tariff(20);
-
-        $messageJson = $this->client->buildMessageJson($message, '00301234');
-
-        $messageJsonObject = json_decode($messageJson);
-
-        $this->assertTrue(isset($messageJsonObject->messages->tariff));
-        $this->assertEquals(20, $messageJsonObject->messages->tariff);
-    }
-
-    /** @test */
     public function it_includes_multipart_data()
     {
         $message = clone $this->message;

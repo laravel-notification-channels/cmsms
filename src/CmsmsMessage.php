@@ -12,8 +12,6 @@ class CmsmsMessage
 
     protected string $reference = '';
 
-    protected int $tariff = 0;
-
     protected ?int $minimumNumberOfMessageParts = null;
 
     protected ?int $maximumNumberOfMessageParts = null;
@@ -66,18 +64,6 @@ class CmsmsMessage
     public function getReference(): string
     {
         return $this->reference;
-    }
-
-    public function tariff(int $tariff): self
-    {
-        $this->tariff = $tariff;
-
-        return $this;
-    }
-
-    public function getTariff(): int
-    {
-        return $this->tariff;
     }
 
     public function multipart(int $minimum, int $maximum): self

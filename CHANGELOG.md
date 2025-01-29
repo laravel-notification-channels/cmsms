@@ -9,6 +9,8 @@ All notable changes to `CMSMS` will be documented in this file
 #### Added
 - Added config value for encoding detection type
 - Two events for success and failure: `SMSSentSuccessfullyEvent` and `SMSSendingFailedEvent`
+#### Removed
+- Removed `tariff` support
 
 ## [3.3.0] - 2024-03-22
 #### Added

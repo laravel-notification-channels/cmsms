@@ -97,22 +97,6 @@ class CmsmsMessageTest extends TestCase
         CmsmsMessage::create()->reference('@#$*A*Sjks87');
     }
 
-    /** @test */
-    public function it_can_set_tariff()
-    {
-        $message = CmsmsMessage::create()->tariff(12);
-
-        $this->assertEquals(12, $message->getTariff());
-    }
-
-    /** @test */
-    public function it_can_set_an_empty_tariff()
-    {
-        $message = CmsmsMessage::create()->tariff(0);
-
-        $this->assertEquals(0, $message->getTariff());
-    }
-
     public function it_can_set_multipart()
     {
         $message = CmsmsMessage::create()->multipart(1, 4);

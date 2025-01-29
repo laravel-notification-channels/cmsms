@@ -89,7 +89,6 @@ class CmsmsClient
                 'authentication' => [
                     'productToken' => $this->productToken,
                 ],
-                'tariff' => $message->getTariff(),
                 'msg' => [[
                     'body' => $body,
                     'to' => [[
