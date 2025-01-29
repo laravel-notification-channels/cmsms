@@ -4,9 +4,12 @@ namespace NotificationChannels\Cmsms\Test;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Facades\Event;
 use Mockery;
 use NotificationChannels\Cmsms\CmsmsClient;
 use NotificationChannels\Cmsms\CmsmsMessage;
+use NotificationChannels\Cmsms\Events\SMSSendingFailedEvent;
+use NotificationChannels\Cmsms\Events\SMSSentSuccessfullyEvent;
 use NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification;
 use Orchestra\Testbench\TestCase;
 
@@ -43,7 +46,7 @@ class CmsmsClientTest extends TestCase
         $this->guzzle
             ->shouldReceive('request')
             ->once()
-            ->andReturn(new Response(200, [], ''));
+            ->andReturn(new Response(200, [], '{"details": "Created 1 message(s)", "errorCode": 0}'));
 
         $this->client->send($this->message, '00301234');
     }
@@ -62,7 +65,7 @@ class CmsmsClientTest extends TestCase
         $this->guzzle
             ->shouldReceive('request')
             ->once()
-            ->andReturn(new Response(200, [], ''));
+            ->andReturn(new Response(200, [], '{"details": "Created 1 message(s)", "errorCode": 0}'));
 
         $this->client->send($message, '00301234');
     }
@@ -75,21 +78,101 @@ class CmsmsClientTest extends TestCase
         $this->guzzle
             ->shouldReceive('request')
             ->once()
-            ->andReturn(new Response(200, [], 'error'));
+            ->andReturn(new Response(200, [], '{"details": "Some error message", "errorCode": 1}'));
 
         $this->client->send($this->message, '00301234');
     }
 
     /** @test */
-    public function it_includes_tariff_in_xml()
+    public function it_includes_multipart_data()
     {
         $message = clone $this->message;
-        $message->tariff(20);
+        $message->multipart(2, 6);
 
-        $messageXml = $this->client->buildMessageXml($message, '00301234');
-        $parsedXml = simplexml_load_string($messageXml);
+        $messageJson = $this->client->buildMessageJson($message, '00301234');
 
-        $this->assertFalse(empty($parsedXml->TARIFF));
-        $this->assertEquals(20, (int) $parsedXml->TARIFF);
+        $messageJsonObject = json_decode($messageJson);
+
+        $this->assertTrue(isset($messageJsonObject->messages->msg[0]->minimumNumberOfMessageParts));
+        $this->assertEquals(2, $messageJsonObject->messages->msg[0]->minimumNumberOfMessageParts);
+        $this->assertTrue(isset($messageJsonObject->messages->msg[0]->minimumNumberOfMessageParts));
+        $this->assertEquals(6, $messageJsonObject->messages->msg[0]->maximumNumberOfMessageParts);
+    }
+
+    /** @test */
+    public function it_includes_reference_data()
+    {
+        $message = clone $this->message;
+        $message->reference('ABC');
+
+        $messageJson = $this->client->buildMessageJson($message, '00301234');
+
+        $messageJsonObject = json_decode($messageJson);
+
+        $this->assertTrue(isset($messageJsonObject->messages->msg[0]->reference));
+        $this->assertEquals('ABC', $messageJsonObject->messages->msg[0]->reference);
+    }
+
+    /** @test */
+    public function it_includes_encoding_detection_type_data_in_body()
+    {
+        $message = clone $this->message;
+        $message->encodingDetectionType('AUTO');
+
+        $messageJson = $this->client->buildMessageJson($message, '00301234');
+
+        $messageJsonObject = json_decode($messageJson);
+
+        $this->assertTrue(isset($messageJsonObject->messages->msg[0]->body->type));
+        $this->assertEquals('AUTO', $messageJsonObject->messages->msg[0]->body->type);
+        $this->assertEquals('0', $messageJsonObject->messages->msg[0]->dcs);
+    }
+
+    /** @test */
+    public function it_includes_encoding_detection_type_data_in_message()
+    {
+        $message = clone $this->message;
+        $message->encodingDetectionType(1);
+
+        $messageJson = $this->client->buildMessageJson($message, '00301234');
+
+        $messageJsonObject = json_decode($messageJson);
+
+        $this->assertFalse(isset($messageJsonObject->messages->msg[0]->body->type));
+        $this->assertEquals('1', $messageJsonObject->messages->msg[0]->dcs);
+    }
+
+    /** @test */
+    public function it_dispatches_a_success_event()
+    {
+        Event::fake();
+
+        $this->guzzle
+            ->shouldReceive('request')
+            ->once()
+            ->andReturn(new Response(200, [], '{"details": "Created 1 message(s)", "errorCode": 0}'));
+
+        $this->client->send($this->message, '00301234');
+
+        Event::assertDispatched(SMSSentSuccessfullyEvent::class);
+    }
+
+    /** @test */
+    public function it_dispatches_a_failure_event()
+    {
+        Event::fake();
+
+        $this->guzzle
+            ->shouldReceive('request')
+            ->once()
+            ->andReturn(new Response(200, [], '{"details": "Some error message", "errorCode": 1}'));
+
+        try {
+            $this->client->send($this->message, '00301234');
+        } catch (CouldNotSendNotification $e) {
+            // Do nothing, we know about the exception
+        }
+
+        Event::assertDispatched(SMSSendingFailedEvent::class);
     }
 }

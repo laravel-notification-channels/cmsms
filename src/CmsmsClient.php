@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace NotificationChannels\Cmsms;
 
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
+use NotificationChannels\Cmsms\Events\SMSSendingFailedEvent;
+use NotificationChannels\Cmsms\Events\SMSSentSuccessfullyEvent;
 use NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification;
-use SimpleXMLElement;
+use NotificationChannels\Cmsms\Exceptions\InvalidMessage;
 
 class CmsmsClient
 {
-    public const GATEWAY_URL = 'https://gw.messaging.cm.com/gateway.ashx';
+    public const GATEWAY_URL = 'https://gw.cmtelecom.com/v1.0/message';
 
     public function __construct(
         protected GuzzleClient $client,
@@ -19,44 +22,85 @@ class CmsmsClient
     ) {
     }
 
+    /**
+     * @throws InvalidMessage
+     * @throws GuzzleException
+     * @throws CouldNotSendNotification
+     */
     public function send(CmsmsMessage $message, string $recipient): void
     {
-        if (is_null(Arr::get($message->toXmlArray(), 'FROM'))) {
+        if (empty($message->getOriginator())) {
             $message->originator(config('services.cmsms.originator'));
         }
 
+        $payload = $this->buildMessageJson($message, $recipient);
+
         $response = $this->client->request('POST', static::GATEWAY_URL, [
-            'body' => $this->buildMessageXml($message, $recipient),
+            'body' => $payload,
             'headers' => [
-                'Content-Type' => 'application/xml',
+                'accept' => 'application/json',
+                'content-type' => 'application/json',
             ],
         ]);
 
-        // API returns an empty string on success
-        // On failure, only the error string is passed
+        /**
+         * If error code is 0, the message was sent successfully.
+         */
         $body = $response->getBody()->getContents();
-        if (! empty($body)) {
+        $errorCode = Arr::get(json_decode($body, true), 'errorCode');
+        if ((int) $errorCode !== 0) {
+            SMSSendingFailedEvent::dispatch($body);
+
             throw CouldNotSendNotification::serviceRespondedWithAnError($body);
         }
+
+        SMSSentSuccessfullyEvent::dispatch($payload);
     }
 
-    public function buildMessageXml(CmsmsMessage $message, string $recipient): string
+    /**
+     * See: https://developers.cm.com/messaging/reference/messages_sendmessage-1
+     */
+    public function buildMessageJson(CmsmsMessage $message, string $recipient): string
     {
-        $xml = new SimpleXMLElement('<MESSAGES/>');
-
-        $xml->addChild('AUTHENTICATION')
-            ->addChild('PRODUCTTOKEN', $this->productToken);
-
-        if ($tariff = $message->getTariff()) {
-            $xml->addChild('TARIFF', (string) $tariff);
+        $body = [];
+        $body['content'] = $message->getBody();
+        if (strtoupper($message->getEncodingDetectionType()) === 'AUTO') {
+            $body['type'] = 'AUTO';
         }
 
-        $msg = $xml->addChild('MSG');
-        foreach ($message->toXmlArray() as $name => $value) {
-            $msg->addChild($name, (string) $value);
+        $minimumNumberOfMessageParts = [];
+        if ($message->getMinimumNumberOfMessageParts() !== null) {
+            $minimumNumberOfMessageParts['minimumNumberOfMessageParts'] = $message->getMinimumNumberOfMessageParts();
         }
-        $msg->addChild('TO', $recipient);
+        $maximumNumberOfMessageParts = [];
+        if ($message->getMaximumNumberOfMessageParts() !== null) {
+            $maximumNumberOfMessageParts['maximumNumberOfMessageParts'] = $message->getMaximumNumberOfMessageParts();
+        }
 
-        return $xml->asXML();
+        $reference = [];
+        if ($message->getReference() !== null) {
+            $reference['reference'] = $message->getReference();
+        }
+
+        $json = [
+            'messages' => [
+                'authentication' => [
+                    'productToken' => $this->productToken,
+                ],
+                'msg' => [[
+                    'body' => $body,
+                    'to' => [[
+                        'number' => $recipient,
+                    ]],
+                    'dcs' => strtoupper($message->getEncodingDetectionType()) === 'AUTO' ? '0' : $message->getEncodingDetectionType(),
+                    'from' => $message->getOriginator(),
+                    ...$minimumNumberOfMessageParts,
+                    ...$maximumNumberOfMessageParts,
+                    ...$reference,
+                ]],
+            ],
+        ];
+
+        return json_encode($json);
     }
 }

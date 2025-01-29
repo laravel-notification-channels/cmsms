@@ -12,7 +12,7 @@ class CmsmsMessage
 
     protected string $reference = '';
 
-    protected int $tariff = 0;
+    protected string $encodingDetectionType = 'AUTO';
 
     protected ?int $minimumNumberOfMessageParts = null;
 
@@ -31,6 +31,11 @@ class CmsmsMessage
         return $this;
     }
 
+    public function getBody(): string
+    {
+        return $this->body;
+    }
+
     public function originator(string|int $originator): self
     {
         if (empty($originator) || strlen($originator) > 11) {
@@ -40,6 +45,11 @@ class CmsmsMessage
         $this->originator = (string) $originator;
 
         return $this;
+    }
+
+    public function getOriginator(): string
+    {
+        return $this->originator;
     }
 
     public function reference(string $reference): self
@@ -53,16 +63,9 @@ class CmsmsMessage
         return $this;
     }
 
-    public function tariff(int $tariff): self
+    public function getReference(): string
     {
-        $this->tariff = $tariff;
-
-        return $this;
-    }
-
-    public function getTariff(): int
-    {
-        return $this->tariff;
+        return $this->reference;
     }
 
     public function multipart(int $minimum, int $maximum): self
@@ -77,15 +80,26 @@ class CmsmsMessage
         return $this;
     }
 
-    public function toXmlArray(): array
+    public function getMinimumNumberOfMessageParts(): ?int
     {
-        return array_filter([
-            'BODY' => $this->body,
-            'FROM' => $this->originator,
-            'REFERENCE' => $this->reference,
-            'MINIMUMNUMBEROFMESSAGEPARTS' => $this->minimumNumberOfMessageParts,
-            'MAXIMUMNUMBEROFMESSAGEPARTS' => $this->maximumNumberOfMessageParts,
-        ]);
+        return $this->minimumNumberOfMessageParts;
+    }
+
+    public function getMaximumNumberOfMessageParts(): ?int
+    {
+        return $this->maximumNumberOfMessageParts;
+    }
+
+    public function encodingDetectionType(string|int $encodingDetectionType): self
+    {
+        $this->encodingDetectionType = (string) $encodingDetectionType;
+
+        return $this;
+    }
+
+    public function getEncodingDetectionType(): string
+    {
+        return $this->encodingDetectionType;
     }
 
     public static function create(string $body = ''): self
