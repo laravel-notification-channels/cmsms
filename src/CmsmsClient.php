@@ -48,7 +48,7 @@ class CmsmsClient
          */
         $body = $response->getBody()->getContents();
         $errorCode = Arr::get(json_decode($body, true), 'errorCode');
-        if ($errorCode !== 0) {
+        if ((int) $errorCode !== 0) {
             SMSSendingFailedEvent::dispatch($body);
 
             throw CouldNotSendNotification::serviceRespondedWithAnError($body);
